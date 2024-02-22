@@ -16,4 +16,9 @@ class RoomStatus extends Model
         'color',
         'is_active',
     ];
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
 }

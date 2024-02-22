@@ -8,6 +8,7 @@ use App\Filament\Resources\BoardingHouseResource\RelationManagers;
 use App\Models\BoardingHouse;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -32,6 +33,11 @@ class BoardingHouseResource extends Resource
                 TextInput::make('name')->required(),
                 Textarea::make('note')->nullable(),
                 FileUpload::make('image')->image()->directory(ConstantEnum::BOARDING_HOUSE_IMG),
+                Textarea::make('address')->nullable(),
+                Select::make('type')->options([
+                    'internal' => 'Internal',
+                    'external' => 'External',
+                ])->required()->default('internal')->label('tipe asrama'),
             ]);
     }
 
@@ -43,7 +49,9 @@ class BoardingHouseResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('note'),
-                ImageColumn::make('image')
+                ImageColumn::make('image'),
+                TextColumn::make('address'),
+                TextColumn::make('type')->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('name', 175);
             $table->string('image')->nullable();
             $table->string('note')->nullable();
+            $table->string('address');
+            $table->enum('type', ['internal', 'external'])->default('internal');
             $table->softDeletes();
             $table->timestamps();
         });

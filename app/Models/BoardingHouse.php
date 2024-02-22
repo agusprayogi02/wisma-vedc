@@ -13,6 +13,13 @@ class BoardingHouse extends Model
     protected $fillable = [
         'name',
         'image',
-        'note'
+        'note',
+        'address',
+        'type'
     ];
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
 }

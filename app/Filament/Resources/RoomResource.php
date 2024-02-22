@@ -7,8 +7,10 @@ use App\Filament\Resources\RoomResource\RelationManagers;
 use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,7 +25,24 @@ class RoomResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('code')
+                    ->required()
+                    ->unique()
+                    ->maxLength(10),
+                Forms\Components\Textarea::make('note')
+                    ->nullable(),
+                Forms\Components\BelongsToSelect::make('boarding_house_id')
+                    ->label("Nama Asrama")
+                    ->relationship('boardingHouse', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\BelongsToSelect::make('room_status_id')
+                    ->relationship('roomStatus', 'name')
+                    ->label("Status Ruangan")
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 
@@ -31,7 +50,18 @@ class RoomResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('code')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('boardingHouse.name')
+                    ->label("Nama Asrama")
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('roomStatus.name')
+                    ->label("Status Ruangan")
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('note')
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -51,7 +81,6 @@ class RoomResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

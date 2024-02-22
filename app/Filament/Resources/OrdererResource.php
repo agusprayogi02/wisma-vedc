@@ -22,6 +22,8 @@ class OrdererResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Pemesan';
+
     public static function form(Form $form): Form
     {
         return $form

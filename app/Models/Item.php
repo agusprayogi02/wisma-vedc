@@ -11,4 +11,9 @@ class Item extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function roomItems()
+    {
+        return $this->hasMany(RoomItem::class);
+    }
 }

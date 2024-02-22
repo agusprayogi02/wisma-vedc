@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->timestamp('date_order');
             $table->date('date_ci');
             $table->date('date_co');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

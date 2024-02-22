@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('room_status_id')->constrained();
             $table->foreignId('room_type_id')->constrained();
             $table->string('code', 10)->unique();
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

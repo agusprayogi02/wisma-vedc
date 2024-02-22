@@ -2,55 +2,54 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RoomResource\Pages;
-use App\Filament\Resources\RoomResource\RelationManagers;
-use App\Models\Room;
+use App\Filament\Resources\RoomItemResource\Pages;
+use App\Filament\Resources\RoomItemResource\RelationManagers;
+use App\Models\RoomItem;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class RoomResource extends Resource
+class RoomItemResource extends Resource
 {
-    protected static ?string $model = Room::class;
+    protected static ?string $model = RoomItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Ruangan';
+    protected static ?string $navigationLabel = 'Ruangan Barang';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
+                Select::make('room_id')
+                    ->label('Ruangan')
+                    ->relationship('room', 'code')
                     ->required()
-                    ->unique()
-                    ->maxLength(10),
-                Forms\Components\BelongsToSelect::make('boarding_house_id')
-                    ->label("Nama Asrama")
-                    ->relationship('boardingHouse', 'name')
-                    ->searchable()
                     ->preload()
-                    ->required(),
-                Forms\Components\BelongsToSelect::make('room_status_id')
-                    ->relationship('roomStatus', 'name')
-                    ->label("Status Ruangan")
-                    ->searchable()
+                    ->searchable(),
+                Select::make('item_id')
+                    ->label('Barang')
+                    ->relationship('item', 'code')
+                    ->required()
                     ->preload()
+                    ->searchable(),
+                Select::make('status')
+                    ->options([
+                        'kurang' => 'Kurang',
+                        'rusak' => 'Rusak',
+                        'baik' => 'Baik',
+                    ])
                     ->required(),
-                Forms\Components\BelongsToSelect::make('room_type_id')
-                    ->relationship('roomType', 'name')
-                    ->label("Tipe Ruangan")
-                    ->searchable()
-                    ->preload()
+                TextInput::make('quantity')
+                    ->label('Jumlah')
+                    ->numeric()
                     ->required(),
-                Forms\Components\Textarea::make('note')
-                    ->nullable(),
             ]);
     }
 
@@ -58,18 +57,22 @@ class RoomResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('code')
+                Tables\Columns\TextColumn::make('room.code')
+                    ->label('Ruangan')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('boardingHouse.name')
-                    ->label("Nama Asrama")
+                Tables\Columns\TextColumn::make('item.code')
+                    ->label('Barang')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('roomStatus.name')
-                    ->label("Status Ruangan")
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('note')
+                Tables\Columns\TextColumn::make('quantity')
+                    ->label('Jumlah')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -89,15 +92,16 @@ class RoomResource extends Resource
     public static function getRelations(): array
     {
         return [
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRooms::route('/'),
-            'create' => Pages\CreateRoom::route('/create'),
-            'edit' => Pages\EditRoom::route('/{record}/edit'),
+            'index' => Pages\ListRoomItems::route('/'),
+            'create' => Pages\CreateRoomItem::route('/create'),
+            'edit' => Pages\EditRoomItem::route('/{record}/edit'),
         ];
     }
 

@@ -25,19 +25,21 @@ class BoardingHouseResource extends Resource
     protected static ?string $model = BoardingHouse::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Asrama';
+    protected static ?string $modelLabel = 'Asrama';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                Textarea::make('note')->nullable(),
-                FileUpload::make('image')->image()->directory(ConstantEnum::BOARDING_HOUSE_IMG),
-                Textarea::make('address')->nullable(),
+                TextInput::make('name')->required()->label('Nama'),
+                Textarea::make('note')->nullable()->label('Catatan'),
+                FileUpload::make('image')->image()->directory(ConstantEnum::BOARDING_HOUSE_IMG)->label('Foto'),
+                Textarea::make('address')->nullable()->label('Alamat'),
                 Select::make('type')->options([
                     'internal' => 'Internal',
                     'external' => 'External',
-                ])->required()->default('internal')->label('tipe asrama'),
+                ])->required()->default('internal')->label('Tipe Asrama'),
             ]);
     }
 
@@ -45,13 +47,14 @@ class BoardingHouseResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('image')->label("Foto"),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('note'),
-                ImageColumn::make('image'),
-                TextColumn::make('address'),
-                TextColumn::make('type')->sortable(),
+                TextColumn::make('address')->label('Alamat')->searchable(),
+                TextColumn::make('type')->sortable()->label('Tipe'),
+                TextColumn::make('note')->label('Catatan'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

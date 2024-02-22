@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->integer('capacity');
             $table->integer('price');
             $table->boolean('is_recommended')->default(true);
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

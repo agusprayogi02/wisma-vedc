@@ -10,12 +10,7 @@ class Room extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'boarding_house_id',
-        'room_status_id',
-        'code',
-        'note'
-    ];
+    protected $guarded = ['id'];
 
     public function boardingHouse()
     {
@@ -25,5 +20,14 @@ class Room extends Model
     public function roomStatus()
     {
         return $this->belongsTo(RoomStatus::class);
+    }
+    public function roomType()
+    {
+        return $this->belongsTo(RoomType::class);
+    }
+
+    public function roomItems()
+    {
+        return $this->hasMany(RoomItem::class);
     }
 }

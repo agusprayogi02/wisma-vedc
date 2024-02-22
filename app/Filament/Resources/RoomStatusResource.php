@@ -25,6 +25,7 @@ class RoomStatusResource extends Resource
     protected static ?string $model = RoomStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Status Ruangan';
 
     public static function form(Form $form): Form
     {
@@ -41,9 +42,9 @@ class RoomStatusResource extends Resource
     {
         return $table
             ->columns([
+                ColorColumn::make('color')->label('Warna'),
                 TextColumn::make('name')->searchable()->sortable()->label('Nama'),
                 TextColumn::make('description')->searchable()->sortable()->label('Deskripsi')->wrap(),
-                ColorColumn::make('color')->label('Warna'),
                 BooleanColumn::make('is_active')->label('Status Aktif'),
             ])
             ->filters([

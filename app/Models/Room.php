@@ -30,4 +30,9 @@ class Room extends Model
     {
         return $this->hasMany(RoomItem::class);
     }
+
+    public function roomUsers()
+    {
+        return $this->belongsToMany(User::class,'room_user')->withPivot('poin');
+    }
 }

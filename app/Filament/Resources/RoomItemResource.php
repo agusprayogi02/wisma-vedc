@@ -35,7 +35,7 @@ class RoomItemResource extends Resource
                     ->searchable(),
                 Select::make('item_id')
                     ->label('Barang')
-                    ->relationship('item', 'code')
+                    ->relationship('item', 'name')
                     ->required()
                     ->preload()
                     ->searchable(),
@@ -61,7 +61,7 @@ class RoomItemResource extends Resource
                     ->label('Ruangan')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('item.code')
+                Tables\Columns\TextColumn::make('item.name')
                     ->label('Barang')
                     ->searchable()
                     ->sortable(),

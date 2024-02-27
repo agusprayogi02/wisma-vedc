@@ -38,8 +38,7 @@ class RoomTypeResource extends Resource
                     ->numeric()
                     ->required(),
                 Textarea::make('note')
-                    ->label('Catatan')
-                    ->required(),
+                    ->label('Catatan'),
                 Toggle::make('is_recommended')
                     ->label('Rekomendasi')
                     ->required()

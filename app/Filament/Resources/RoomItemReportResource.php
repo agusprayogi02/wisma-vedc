@@ -7,6 +7,8 @@ use App\Filament\Resources\RoomItemReportResource\RelationManagers;
 use App\Models\RoomItem;
 use App\Models\RoomItemReport;
 use Filament\Forms;
+use Filament\Forms\Components\BelongsToManyMultiSelect;
+use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -28,10 +30,11 @@ class RoomItemReportResource extends Resource
         return $form
             ->schema([
                 Select::make('room_item_id')
-                    ->label('Ruangan Barang')
-                    ->relationship('roomItem', 'quantity')
+                    ->label('Ruangan')
+                    ->options(
+                        RoomItem::with('room')->get()->pluck('room.code', 'id')->toArray()
+                    )
                     ->required()
-                    ->preload()
                     ->searchable(),
                 TextInput::make('quantity')
                     ->label('Jumlah')
@@ -39,7 +42,7 @@ class RoomItemReportResource extends Resource
                     ->required(),
                 Select::make('status')
                     ->options([
-                        'hilang' => 'Rusak',
+                        'hilang' => 'Hilang',
                         'rusak' => 'Rusak',
                     ])
                     ->required(),

@@ -51,6 +51,7 @@ class RoomResource extends Resource
                     ->preload()
                     ->required(),
                 Forms\Components\Textarea::make('note')
+                    ->label('Catatan')
                     ->nullable(),
             ]);
     }

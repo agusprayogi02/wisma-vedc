@@ -22,6 +22,7 @@ class RoomResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Ruangan';
+    protected static ?string $modelLabel = 'Ruangan';
 
     public static function form(Form $form): Form
     {

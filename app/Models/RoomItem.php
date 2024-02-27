@@ -21,4 +21,9 @@ class RoomItem extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function roomItemReports()
+    {
+        return $this->hasMany(RoomItemReport::class);
+    }
 }

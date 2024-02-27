@@ -31,8 +31,13 @@ class Room extends Model
         return $this->hasMany(RoomItem::class);
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
     public function roomUsers()
     {
-        return $this->belongsToMany(User::class,'room_user')->withPivot('poin');
+        return $this->belongsToMany(User::class, 'room_user')->withPivot('poin');
     }
 }

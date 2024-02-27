@@ -11,4 +11,9 @@ class Orderer extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             RoomStatusesSeeder::class,
             RoomTypesSeeder::class,
             RoomSeeder::class,
+            ItemSeeder::class,
         ]);
     }
 }

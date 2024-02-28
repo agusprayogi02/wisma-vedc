@@ -15,7 +15,7 @@ class RoomStatusesSeeder extends Seeder
     {
         $roomStatuses = [
             [
-                'name' => '0',
+                'name' => 'O',
                 'description' => 'Occupied, kamar yang sedang ditempati oleh sesorang secara sah dan teregister sebagai tamu hotel',
                 'color' => '',
                 'icon' => '',
@@ -64,7 +64,7 @@ class RoomStatusesSeeder extends Seeder
                 'is_active' => 0,
             ],
             [
-                'name'=> 'COMP', 
+                'name'=> 'COMP',
                 'description' => 'Compliment, Kamar yang tereister oleh tamu hotel namun tidak dikenakan biaya',
                 'color' => '',
                 'icon' => '',

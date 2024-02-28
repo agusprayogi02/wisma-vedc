@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Room::class, 'room_user')->withPivot('poin');
     }
+
+    public function roomItemReports()
+    {
+        return $this->hasMany(RoomItemReport::class);
+    }
 }

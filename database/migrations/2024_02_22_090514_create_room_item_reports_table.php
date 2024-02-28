@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('room_item_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('room_item_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->integer('quantity');
             $table->enum('status', ['hilang', 'rusak']);
             $table->string('note')->nullable();

@@ -16,4 +16,9 @@ class RoomItemReport extends Model
     {
         return $this->belongsTo(RoomItem::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

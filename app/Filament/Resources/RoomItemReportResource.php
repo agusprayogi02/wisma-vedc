@@ -24,12 +24,15 @@ class RoomItemReportResource extends Resource
     protected static ?string $model = RoomItemReport::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Laporan Barang Ruangan';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                belongsToSelect::make('user_id')->label('User')->relationship('user', 'name')->preload()->required()->default(auth()->user()->id),
                 Select::make('room_item_id')
+                    ->preload()
                     ->label('Ruangan')
                     ->options(
                         RoomItem::with('room')->get()->pluck('room.code', 'id')->toArray()
@@ -46,6 +49,9 @@ class RoomItemReportResource extends Resource
                         'rusak' => 'Rusak',
                     ])
                     ->required(),
+                TextInput::make('note')
+                    ->label('Catatan')
+                    ->nullable(),
             ]);
     }
 
@@ -54,7 +60,19 @@ class RoomItemReportResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('roomItem.room.code')
-                    ->label('Ruangan'),
+                    ->label('Ruangan')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('quantity')
+                    ->label('Jumlah')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('note')
+                    ->label('Catatan'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

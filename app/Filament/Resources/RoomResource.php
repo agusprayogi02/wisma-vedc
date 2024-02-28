@@ -71,6 +71,10 @@ class RoomResource extends Resource
                     ->label("Status Ruangan")
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('roomType.name')
+                    ->label("Tipe Ruangan")
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('note')
             ])
             ->filters([

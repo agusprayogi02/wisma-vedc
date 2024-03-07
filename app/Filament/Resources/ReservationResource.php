@@ -33,15 +33,15 @@ class ReservationResource extends Resource
                 ->schema([
                     BelongsToSelect::make('user_id')->relationship('user', 'name')->required()->preload()->searchable()->label('User')->default(auth()->user()->id),
                     BelongsToSelect::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order'),
-                    TextInput::make('qunatity')->required()->label('Jumlah'),
+                    TextInput::make('quantity')->required()->label('Jumlah'),
                     Select::make('type')
                         ->options([
                             'PNBP' => 'PNBP',
                             'DIPA' => 'DIPA'
                         ])->required()->label('Tipe'),
-                    DatePicker::make('order_date')->native(false)->required()->label('Tanggal Pesan'),
-                    DatePicker::make('start_date')->native(false)->required()->label('Tanggal Masuk'),
-                    DatePicker::make('end_date')->native(false)->required()->label('Tanggal Keluar'),
+                    DatePicker::make('date_order')->native(false)->required()->label('Tanggal Pesan'),
+                    DatePicker::make('date_ci')->native(false)->required()->label('Tanggal Masuk'),
+                    DatePicker::make('date_co')->native(false)->required()->label('Tanggal Keluar'),
                     TextInput::make('note')->nullable()->label('Catatan'),
                 ])
                 ->columns(2),
@@ -54,11 +54,11 @@ class ReservationResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')->searchable()->sortable()->label('User'),
                 Tables\Columns\TextColumn::make('orderer.name')->searchable()->sortable()->label('Order'),
-                Tables\Columns\TextColumn::make('qunatity')->searchable()->sortable()->label('Jumlah'),
+                Tables\Columns\TextColumn::make('quantity')->searchable()->sortable()->label('Jumlah'),
                 Tables\Columns\TextColumn::make('type')->searchable()->sortable()->label('Tipe'),
-                Tables\Columns\TextColumn::make('order_date')->searchable()->sortable()->label('Tanggal Pesan'),
-                Tables\Columns\TextColumn::make('start_date')->searchable()->sortable()->label('Tanggal Masuk'),
-                Tables\Columns\TextColumn::make('end_date')->searchable()->sortable()->label('Tanggal Keluar'),
+                Tables\Columns\TextColumn::make('date_order')->searchable()->sortable()->label('Tanggal Pesan'),
+                Tables\Columns\TextColumn::make('date_ci')->searchable()->sortable()->label('Tanggal Masuk'),
+                Tables\Columns\TextColumn::make('date_co')->searchable()->sortable()->label('Tanggal Keluar'),
                 Tables\Columns\TextColumn::make('note')->searchable()->sortable()->label('Catatan'),
             ])
             ->filters([

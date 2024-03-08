@@ -28,8 +28,15 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
     public function getTotalRoomUsedToday(): int
     {
         return $this->model
-            ->whereIn('room_type_id', [1, 3, 4])
+            ->whereIn('room_status_id', [1, 3, 4])
             ->whereDate('created_at', '=', now()->format('Y-m-d'))
+            ->count();
+    }
+
+    public function getTotalRoomReady(): int
+    {
+        return $this->model
+            ->whereIn('room_status_id', [2,5,6])
             ->count();
     }
 

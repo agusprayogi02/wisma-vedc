@@ -28,3 +28,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::get('rooms', [RoomController::class, 'index']);
 Route::get('rooms/total_used', [RoomController::class, 'totalRoomUsedToday']);
+Route::get('rooms/total_ready', [RoomController::class, 'totalRoomReady']);

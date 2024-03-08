@@ -8,6 +8,7 @@ interface RoomRepository extends Repository
 {
 
     public function getRooms();
-
     public function getTotalRoomUsedToday(): int;
+    public function getTotalRoomReady():int;
+
 }

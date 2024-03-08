@@ -17,6 +17,7 @@ class RoomController extends Controller
         $this->responseMessages = [
             "index" => "Load rooms successfully",
             "totalRoomUsedToday" => "Total room used today",
+            "totalRoomReady" => "Total room ready"
         ];
     }
 
@@ -32,6 +33,15 @@ class RoomController extends Controller
     public function totalRoomUsedToday()
     {
         $total = $this->roomRepository->getTotalRoomUsedToday();
+        return $this->response(
+            ["total" => $total],
+            $this->getResponseMessage(__FUNCTION__)
+        );
+    }
+
+    public function totalRoomReady()
+    {
+        $total = $this->roomRepository->getTotalRoomReady();
         return $this->response(
             ["total" => $total],
             $this->getResponseMessage(__FUNCTION__)

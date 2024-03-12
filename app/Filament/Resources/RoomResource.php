@@ -30,7 +30,7 @@ class RoomResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('code')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(10),
                 Forms\Components\BelongsToSelect::make('boarding_house_id')
                     ->label("Nama Asrama")
@@ -94,8 +94,7 @@ class RoomResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public static function getPages(): array

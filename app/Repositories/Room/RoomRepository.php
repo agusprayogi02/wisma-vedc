@@ -10,6 +10,6 @@ interface RoomRepository extends Repository
     public function getTotalRoomUsedToday(): int;
     public function getTotalRoomKotorToday(): int;
     public function getTotalRoomReadyToday(): int;
-    public function getTotalRoomReady():int;
+    public function getTotalRoom():int;
 
 }

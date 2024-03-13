@@ -20,7 +20,7 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
         $this->model = $model;
     }
 
-    public function getRooms(): \LaravelIdea\Helper\App\Models\_IH_Room_C|\Illuminate\Database\Eloquent\Collection|array
+    public function getRooms()
     {
         return $this->model->with(['boardingHouse', 'roomStatus', 'roomType'])->get();
     }
@@ -32,13 +32,25 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
             ->whereDate('created_at', '=', now()->format('Y-m-d'))
             ->count();
     }
-
-    public function getTotalRoomReady(): int
+    public function getTotalRoomKotorToday(): int
     {
         return $this->model
-            ->whereIn('room_status_id', [2,5,6])
+            ->whereIn('room_status_id', [3, 4])
+            ->whereDate('created_at', '=', now()->format('Y-m-d'))
             ->count();
     }
 
+    public function getTotalRoomReadyToday(): int
+    {
+        return $this->model
+            ->whereIn('room_status_id', [1])
+            ->whereDate('created_at', '=', now()->format('Y-m-d'))
+            ->count();
+    }
+
+    public function getTotalRoom(): int
+    {
+        return $this->model->count();
+    }
 
 }

@@ -34,3 +34,6 @@ Route::get('room_item_reports', [RoomItemReportController::class, 'index']);
 Route::get('room_item_reports/total_rusak', [RoomItemReportController::class, 'totalRusak']);
 Route::get('room_item_reports/total_hilang', [RoomItemReportController::class, 'totalHilang']);
 Route::get('room_item_reports/total', [RoomItemReportController::class, 'total']);
+Route::get('rooms/total_ready', [RoomController::class, 'totalRoomReadyToday']);
+Route::get('rooms/total_kotor', [RoomController::class, 'totalRoomKotorToday']);
+Route::get('rooms/total', [RoomController::class, 'totalRoom']);

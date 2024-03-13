@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('room_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('room_id')->constrained();
+            $table->foreignId('room_status_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->integer('poin');
             $table->softDeletes();

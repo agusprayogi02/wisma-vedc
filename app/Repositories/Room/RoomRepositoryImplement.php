@@ -29,22 +29,22 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
     {
         return $this->model
             ->whereIn('room_status_id', [1, 3, 4])
-            ->whereDate('created_at', '=', now()->format('Y-m-d'))
+            // ->whereDate('created_at', '=', now()->format('Y-m-d'))
             ->count();
     }
     public function getTotalRoomKotorToday(): int
     {
         return $this->model
-            ->whereIn('room_status_id', [3, 4])
-            ->whereDate('created_at', '=', now()->format('Y-m-d'))
+            ->where('room_status_id', 7)
+            // ->whereDate('created_at', '=', now()->format('Y-m-d'))
             ->count();
     }
 
     public function getTotalRoomReadyToday(): int
     {
         return $this->model
-            ->whereIn('room_status_id', [1])
-            ->whereDate('created_at', '=', now()->format('Y-m-d'))
+            ->whereIn('room_status_id', [2,5,6])
+            // ->whereDate('created_at', '=', now()->format('Y-m-d'))
             ->count();
     }
 

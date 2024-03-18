@@ -43,11 +43,11 @@ class RoomUserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('room_id')
+                Tables\Columns\TextColumn::make('room.code')
                     ->label('Room')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('User')
                     ->searchable()
                     ->sortable(),

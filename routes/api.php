@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\RoomItemReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\RoomItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,5 @@ Route::get('room_item_reports/total', [RoomItemReportController::class, 'total']
 Route::get('rooms/total_ready', [RoomController::class, 'totalRoomReadyToday']);
 Route::get('rooms/total_kotor', [RoomController::class, 'totalRoomKotorToday']);
 Route::get('rooms/total', [RoomController::class, 'totalRoom']);
+Route::get('rooms/total_used_by_asrama', [RoomController::class, 'totalRoomUsedByAsramaToday']);
+Route::get('room_items', [RoomItemController::class, 'RoomItem']);

@@ -53,4 +53,12 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
         return $this->model->count();
     }
 
+    public function getTotalRoomUsedByAsramaToday(): int
+    {
+        return $this->model
+            ->whereIn('room_status_id', [1, 3, 4])
+            ->groupBy('boarding_house_id')
+            ->count();
+    }
+
 }

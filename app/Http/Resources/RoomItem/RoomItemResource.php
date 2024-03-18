@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\RoomItem;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RoomResource extends JsonResource
+class RoomItem extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'room_status' => $this->room_status,
-            'boardinghouse' => $this->boardinghouse,
-            'room_type' => $this->room_type,
-            'code' => $this->code,
+            'room' => $this->whenLoaded('room')->code,
+            'item' => $this->whenLoaded('item')->name,
+            'quantity' => $this->quantity,
             'note' => $this->note,
         ];
     }

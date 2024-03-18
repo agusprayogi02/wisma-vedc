@@ -14,10 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('reservation_id')->constrained();
             $table->foreignId('room_id')->constrained();
-            $table->string('name', 150);
-            $table->enum('gender', ['L', 'P']);
-            $table->string('address');
-            $table->string('phone', 15);
+            $table->string('name', 150)->nullable();
+            $table->enum('gender', ['L', 'P'])->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone', 15)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

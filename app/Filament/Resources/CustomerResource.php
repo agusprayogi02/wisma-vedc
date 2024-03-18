@@ -23,7 +23,7 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                //
+
             ]);
     }
 
@@ -31,7 +31,7 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                //
+
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

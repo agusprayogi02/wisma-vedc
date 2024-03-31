@@ -7,6 +7,7 @@ use App\Http\Resources\Auth\AuthResource;
 use App\Http\Response;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\Request;
+use \App\Exceptions\WismaException;
 
 class AuthController extends Controller
 {
@@ -25,6 +26,7 @@ class AuthController extends Controller
      * @param AuthService $service
      * @param Request $request
      * @return Response
+     * @throws WismaException
      */
     public function authenticate(AuthService $service, Request $request): Response
     {

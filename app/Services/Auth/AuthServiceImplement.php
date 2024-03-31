@@ -11,12 +11,12 @@ use LaravelEasyRepository\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
-class AuthServiceImplement extends Service implements AuthService{
+class AuthServiceImplement extends Service implements AuthService
+{
 
     use ValidationInput;
 
     /**
-     * @throws \Throwable
      * @throws WismaException
      */
     public function authenticate(array $requestedData): array
@@ -29,6 +29,11 @@ class AuthServiceImplement extends Service implements AuthService{
 
         $user = auth()->user();
 
+        // Validate Email
+        throw_if(
+            $user->email_verified_at == null,
+            new WismaException(ResponseCode::ERR_FORBIDDEN_ACCESS, "Lakukan verifikasi email terlebih dahulu!")
+        );
         return [
             "user" => $user,
             "token" => $user->createToken("personal_access_token")

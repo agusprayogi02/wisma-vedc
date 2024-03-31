@@ -39,64 +39,50 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
-    }
+        $this->renderable(function (Throwable $e) {
+            $statusCode = 500;
+            $message = [
+                env('APP_ENV') == 'local' && env('APP_DEBUG')
+                ? 'Internal server error ' . $e->getMessage()
+                : 'Internal server error',
+            ];
+            if ($e instanceof ValidationException) {
+                $messages = [];
 
-    public function render($request, Throwable $e): Response|JsonResponse|SymfonyResponse
-    {
-        if ((false === $e instanceof WismaException) && $request->expectsJson()) {
-            $e = $this->mapToWismaException($request, $e);
-        }
+                foreach ($e->errors() as $error) {
+                    $messages[] = $error[0];
+                }
+                $message = $messages;
+                $statusCode = 422;
+            }
 
-        return parent::render($request, $e);
-    }
+            if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException || $e instanceof ItemNotFoundException) {
+                $statusCode = 404;
+                $message = ['The data you\'re looking for couldn\'t be found'];
+            }
 
-    private function mapToWismaException(Request $request, Throwable $e): WismaException|Throwable
-    {
-        if ($e instanceof ModelNotFoundException) {
-            return new WismaException(ResponseCode::ERR_ENTITY_NOT_FOUND, ResponseCode::ERR_ENTITY_NOT_FOUND->message(), previous: $e);
-        }
+            if ($e instanceof UnauthorizedException || $e instanceof UnauthorizedHttpException || $e instanceof AuthenticationException) {
+                $statusCode = 401;
+                $message = [$e->getMessage()];
+            }
 
-        if ($e instanceof ValidationException) {
-            return new WismaException(ResponseCode::ERR_VALIDATION, $e->getMessage(), $e->errors(), previous: $e);
-        }
+            if ($e instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+                $statusCode = 403;
+                $message = [$e->getMessage()];
+            }
 
-        if ($e instanceof BadRequestException) {
-            return new WismaException(ResponseCode::ERR_VALIDATION, $e->getMessage(), $e->getMessage(), previous: $e);
-        }
+            if ($e instanceof UnprocessableEntityHttpException) {
+                $statusCode = 400;
+                $message = [$e->getMessage()];
+            }
 
-        if ($e instanceof RoleAlreadyExists) {
-            return new WismaException(ResponseCode::ERR_VALIDATION, $e->getMessage(), previous: $e);
-        }
+            if ($e instanceof HttpException) {
+                $statusCode = $e->getStatusCode();
+                $message = [$e->getMessage()];
+            }
 
-//        if ($e instanceof OAuthServerException || $e instanceof AuthenticationException) {
-//            return new MaasyaException(ResponseCode::ERR_AUTHENTICATION, $e->getMessage(), null, $e);
-//        }
+            return response()->json(['message' => $message,], $statusCode);
+        });
 
-        if ($e instanceof AuthenticationException) {
-            return new WismaException(ResponseCode::ERR_AUTHENTICATION, $e->getMessage(), null, $e);
-        }
-
-        if ($e instanceof NotFoundHttpException) {
-            return new WismaException(ResponseCode::ERR_ROUTE_NOT_FOUND, $e->getMessage(), null, $e);
-        }
-
-        if ($e instanceof AuthorizationException || $e instanceof UnauthorizedException) {
-            return new WismaException(ResponseCode::ERR_ACTION_UNAUTHORIZED, $e->getMessage(), null, $e);
-        }
-
-        if (config('app.debug')) {
-            return $e;
-        }
-
-        return new WismaException(
-            rc: ResponseCode::ERR_UNKNOWN,
-            data: [
-                'base_url' => $request->getBaseUrl(),
-                'path' => $request->getUri(),
-                'origin' => $request->ip(),
-                'method' => $request->getMethod(),
-            ],
-            previous: $e
-        );
     }
 }

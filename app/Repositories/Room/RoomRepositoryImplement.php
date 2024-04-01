@@ -25,28 +25,45 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
         return $this->model->with(['boardingHouse', 'roomStatus', 'roomType'])->get();
     }
 
-    public function getTotalRoomUsedToday(): int
-    {
-        return $this->model
-            ->whereIn('room_status_id', [1, 3, 4])
-            // ->whereDate('created_at', '=', now()->format('Y-m-d'))
-            ->count();
-    }
-    public function getTotalRoomKotorToday(): int
-    {
-        return $this->model
-            ->where('room_status_id', 7)
-            // ->whereDate('created_at', '=', now()->format('Y-m-d'))
-            ->count();
-    }
+    public function getTotalRoomUsedToday(): array
+{
+    $roomsUsed = $this->model
+        ->whereIn('room_status_id', [1, 3, 4])
+        ->with(['boardingHouse', 'roomStatus', 'roomType'])
+        ->get();
 
-    public function getTotalRoomReadyToday(): int
-    {
-        return $this->model
-            ->whereIn('room_status_id', [2,5,6])
-            // ->whereDate('created_at', '=', now()->format('Y-m-d'))
-            ->count();
-    }
+    return [
+        'total' => $roomsUsed->count(),
+        'rooms' => $roomsUsed
+    ];
+}
+
+    public function getTotalRoomKotorToday(): array
+{
+    $roomsKotor = $this->model
+        ->where('room_status_id', 7)
+        ->with(['boardingHouse', 'roomStatus', 'roomType'])
+        ->get();
+
+    return [
+        'total' => $roomsKotor->count(),
+        'rooms' => $roomsKotor
+    ];
+}
+
+
+    public function getTotalRoomReadyToday(): array
+{
+    $roomsReady = $this->model
+        ->whereIn('room_status_id', [2,5,6])
+        ->with(['boardingHouse', 'roomStatus', 'roomType'])
+        ->get();
+
+    return [
+        'total' => $roomsReady->count(),
+        'rooms' => $roomsReady
+    ];
+}
 
     public function getTotalRoom(): int
     {

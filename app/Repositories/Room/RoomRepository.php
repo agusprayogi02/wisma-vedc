@@ -7,9 +7,9 @@ use LaravelEasyRepository\Repository;
 interface RoomRepository extends Repository
 {
     public function getRooms();
-    public function getTotalRoomUsedToday(): int;
-    public function getTotalRoomKotorToday(): int;
-    public function getTotalRoomReadyToday(): int;
+    public function getTotalRoomUsedToday(): array;
+    public function getTotalRoomKotorToday(): array;
+    public function getTotalRoomReadyToday(): array;
     public function getTotalRoomUsedByAsramaToday(): int;
     public function getTotalRoom():int;
 

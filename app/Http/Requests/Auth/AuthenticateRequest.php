@@ -23,7 +23,22 @@ class AuthenticateRequest extends FormRequest
     {
         return [
             'email' => 'required',
-            'password' => 'required|max:128'
+            'password' => 'required|max:20|min:8'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Email is required',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 8 characters',
+            'password.max' => 'Password must not exceed 20 characters'
         ];
     }
 }

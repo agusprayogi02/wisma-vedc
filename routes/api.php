@@ -39,9 +39,6 @@ Route::get('room_item_reports/total', [RoomItemReportController::class, 'total']
 Route::get('rooms/total_ready', [RoomController::class, 'totalRoomReadyToday']);
 Route::get('rooms/total_kotor', [RoomController::class, 'totalRoomKotorToday']);
 Route::get('rooms/total', [RoomController::class, 'totalRoom']);
-<<<<<<< HEAD
 Route::get('room_user_reports', [RoomUserController::class, 'RoomUser']);
-=======
 Route::get('rooms/total_used_by_asrama', [RoomController::class, 'totalRoomUsedByAsramaToday']);
 Route::get('room_items', [RoomItemController::class, 'RoomItem']);
->>>>>>> 5bb80d9563c1ba8717d1abca621d99441b7af7f5

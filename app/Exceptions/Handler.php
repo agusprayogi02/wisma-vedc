@@ -7,16 +7,13 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Exceptions\RoleAlreadyExists;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+
 
 class Handler extends ExceptionHandler
 {
@@ -39,50 +36,65 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
-        $this->renderable(function (Throwable $e) {
-            $statusCode = 500;
-            $message = [
-                env('APP_ENV') == 'local' && env('APP_DEBUG')
-                ? 'Internal server error ' . $e->getMessage()
-                : 'Internal server error',
-            ];
-            if ($e instanceof ValidationException) {
-                $messages = [];
-
-                foreach ($e->errors() as $error) {
-                    $messages[] = $error[0];
-                }
-                $message = $messages;
-                $statusCode = 422;
-            }
-
-            if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException || $e instanceof ItemNotFoundException) {
-                $statusCode = 404;
-                $message = ['The data you\'re looking for couldn\'t be found'];
-            }
-
-            if ($e instanceof UnauthorizedException || $e instanceof UnauthorizedHttpException || $e instanceof AuthenticationException) {
-                $statusCode = 401;
-                $message = [$e->getMessage()];
-            }
-
-            if ($e instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
-                $statusCode = 403;
-                $message = [$e->getMessage()];
-            }
-
-            if ($e instanceof UnprocessableEntityHttpException) {
-                $statusCode = 400;
-                $message = [$e->getMessage()];
-            }
-
-            if ($e instanceof HttpException) {
-                $statusCode = $e->getStatusCode();
-                $message = [$e->getMessage()];
-            }
-
-            return response()->json(['message' => $message,], $statusCode);
-        });
-
     }
+
+    public function render($request, Throwable $e): \Illuminate\Http\Response|Throwable|\Illuminate\Http\JsonResponse|WismaException|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+    {
+        if ($request->is('api/*')) {
+            $e = $this->mapToWismaException($request, $e);
+        }
+
+        return parent::render($request, $e);
+    }
+
+    private function mapToWismaException($request, Throwable $e): WismaException|Throwable
+    {
+        if ($e instanceof ModelNotFoundException) {
+            return new WismaException(ResponseCode::ERR_ENTITY_NOT_FOUND, ResponseCode::ERR_ENTITY_NOT_FOUND->message(), previous: $e);
+        }
+
+        if ($e instanceof ValidationException) {
+            return new WismaException(ResponseCode::ERR_VALIDATION, $e->getMessage(), $e->errors(), previous: $e);
+        }
+
+        if ($e instanceof BadRequestException) {
+            return new WismaException(ResponseCode::ERR_VALIDATION, $e->getMessage(), $e->getMessage(), previous: $e);
+        }
+
+        if ($e instanceof RoleAlreadyExists) {
+            return new WismaException(ResponseCode::ERR_VALIDATION, $e->getMessage(), previous: $e);
+        }
+
+//        if ($e instanceof OAuthServerException || $e instanceof AuthenticationException) {
+//            return new WismaException(ResponseCode::ERR_AUTHENTICATION, $e->getMessage(), null, $e);
+//        }
+
+        if ($e instanceof AuthenticationException) {
+            return new WismaException(ResponseCode::ERR_AUTHENTICATION, $e->getMessage(), null, $e);
+        }
+
+        if ($e instanceof NotFoundHttpException) {
+            return new WismaException(ResponseCode::ERR_ROUTE_NOT_FOUND, $e->getMessage(), null, $e);
+        }
+
+        if ($e instanceof AuthorizationException || $e instanceof UnauthorizedException) {
+            return new WismaException(ResponseCode::ERR_ACTION_UNAUTHORIZED, $e->getMessage(), null, $e);
+        }
+
+        if (config('app.debug')) {
+            return $e;
+        }
+
+        return new WismaException(
+            rc: ResponseCode::ERR_UNKNOWN,
+            data: [
+                'base_url' => $request->getBaseUrl(),
+                'path' => $request->getUri(),
+                'origin' => $request->ip(),
+                'method' => $request->getMethod(),
+            ],
+            previous: $e
+        );
+    }
+
 }

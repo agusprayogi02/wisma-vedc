@@ -5,21 +5,20 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RoomUserResource\Pages;
 use App\Filament\Resources\RoomUserResource\RelationManagers;
 use App\Models\RoomUser;
-use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\BelongsToSelect;
-use Filament\Forms\Components\Card;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class RoomUserResource extends Resource
 {
-    protected static ?string $model = RoomUser::class; 
+    protected static ?string $model = RoomUser::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Petugas';
@@ -28,14 +27,19 @@ class RoomUserResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
-                    ->schema([
-                        BelongsToSelect::make('room_id')->label('Room')->relationship('room', 'code')->preload()->required(),
-                        belongsToSelect::make('user_id')->label('User')->relationship('user', 'name')->preload()->required()->default(auth()->user()->id),
-                        TextInput::make('poin')->label('Poin')->numeric()->required(),
-                        
-                    ])
-                    ->columns(2),
+                Select::make('room_id')->label('Room')->relationship('room', 'code')
+                    ->preload()->required()->searchable(),
+                Select::make('user_id')->label('User')->relationship('user', 'name')
+                    ->preload()->required()->default(auth()->user()->id)
+                    ->searchable()
+                    ->hintAction(
+                        Action::make('create_user')
+                            ->icon('heroicon-m-plus')
+                            ->requiresConfirmation()
+                            ->action(function (Set $set, $state) {
+                            })
+                    ),
+                TextInput::make('poin')->label('Poin')->numeric()->required(),
             ]);
     }
 
@@ -61,6 +65,7 @@ class RoomUserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -83,5 +88,13 @@ class RoomUserResource extends Resource
             'create' => Pages\CreateRoomUser::route('/create'),
             'edit' => Pages\EditRoomUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

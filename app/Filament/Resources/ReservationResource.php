@@ -5,8 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ReservationResource\Pages;
 
 use App\Models\Reservation;
-use Filament\Forms;
-use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -32,8 +30,8 @@ class ReservationResource extends Resource
     {
         return $form
             ->schema([
-                    BelongsToSelect::make('user_id')->relationship('user', 'name')->required()->preload()->searchable()->label('User')->default(auth()->user()->id),
-                    BelongsToSelect::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order')
+                    Select::make('user_id')->relationship('user', 'name')->required()->preload()->searchable()->label('User')->default(auth()->user()->id),
+                    Select::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order')
                     ->hintAction(
                         Action::make('Add New')
                             ->requiresConfirmation()

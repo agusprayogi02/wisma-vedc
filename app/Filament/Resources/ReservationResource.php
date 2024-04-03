@@ -5,18 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\RelationManagers;
 use App\Models\Reservation;
-use Filament\Forms;
-use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
 
 class ReservationResource extends Resource
 {
@@ -29,22 +26,18 @@ class ReservationResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
-                ->schema([
-                    BelongsToSelect::make('user_id')->relationship('user', 'name')->required()->preload()->searchable()->label('User')->default(auth()->user()->id),
-                    BelongsToSelect::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order'),
-                    TextInput::make('quantity')->required()->label('Jumlah'),
-                    Select::make('type')
-                        ->options([
-                            'PNBP' => 'PNBP',
-                            'DIPA' => 'DIPA'
-                        ])->required()->label('Tipe'),
-                    DatePicker::make('date_order')->native(false)->required()->label('Tanggal Pesan'),
-                    DatePicker::make('date_ci')->native(false)->required()->label('Tanggal Masuk'),
-                    DatePicker::make('date_co')->native(false)->required()->label('Tanggal Keluar'),
-                    TextInput::make('note')->nullable()->label('Catatan'),
-                ])
-                ->columns(2),
+                Select::make('user_id')->relationship('user', 'name')->required()->preload()->searchable()->label('User')->default(auth()->user()->id),
+                Select::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order'),
+                TextInput::make('quantity')->required()->label('Jumlah'),
+                Select::make('type')
+                    ->options([
+                        'PNBP' => 'PNBP',
+                        'DIPA' => 'DIPA'
+                    ])->required()->label('Tipe'),
+                DatePicker::make('date_order')->native(false)->required()->label('Tanggal Pesan'),
+                DatePicker::make('date_ci')->native(false)->required()->label('Tanggal Masuk'),
+                DatePicker::make('date_co')->native(false)->required()->label('Tanggal Keluar'),
+                TextInput::make('note')->nullable()->label('Catatan'),
             ]);
     }
 

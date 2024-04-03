@@ -28,7 +28,14 @@ class RoomUserResource extends Resource
         return $form
             ->schema([
                 Select::make('room_id')->label('Room')->relationship('room', 'code')
-                    ->preload()->required()->searchable(),
+                    ->preload()->required()->searchable()->hintAction(
+                        Action::make('create_room')
+                            ->icon('heroicon-m-plus')
+                            ->requiresConfirmation()
+                            ->action(function () {
+                                return redirect()->route('filament.admin.resources.rooms.create');
+                            })
+                    ),
                 Select::make('user_id')->label('User')->relationship('user', 'name')
                     ->preload()->required()->default(auth()->user()->id)
                     ->searchable()
@@ -37,6 +44,7 @@ class RoomUserResource extends Resource
                             ->icon('heroicon-m-plus')
                             ->requiresConfirmation()
                             ->action(function (Set $set, $state) {
+                                return redirect()->route('filament.admin.resources.users.create');
                             })
                     ),
                 TextInput::make('poin')->label('Poin')->numeric()->required(),

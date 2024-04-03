@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReservationResource\Pages;
-use App\Filament\Resources\ReservationResource\RelationManagers;
 use App\Models\Reservation;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -16,9 +16,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Set;
 
 class ReservationResource extends Resource
 {
@@ -37,10 +34,12 @@ class ReservationResource extends Resource
                     ->required()->preload()->searchable()->label('Order')
                     ->hintAction(
                         Action::make('Add New')
+                            ->icon('heroicon-m-plus')
                             ->requiresConfirmation()
                             ->action(function ($state) {
-                                return redirect()->route('filament.resources.orderersResource');
-                            })),
+                                return redirect()->route('filament.admin.resources.orderers.create');
+                            })
+                    ),
                 TextInput::make('quantity')->required()->label('Jumlah'),
                 Select::make('type')
                     ->options([

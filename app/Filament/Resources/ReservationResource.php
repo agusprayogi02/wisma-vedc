@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -45,14 +46,14 @@ class ReservationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->searchable()->sortable()->label('User'),
-                Tables\Columns\TextColumn::make('orderer.name')->searchable()->sortable()->label('Order'),
-                Tables\Columns\TextColumn::make('quantity')->searchable()->sortable()->label('Jumlah'),
-                Tables\Columns\TextColumn::make('type')->searchable()->sortable()->label('Tipe'),
-                Tables\Columns\TextColumn::make('date_order')->searchable()->sortable()->label('Tanggal Pesan'),
-                Tables\Columns\TextColumn::make('date_ci')->searchable()->sortable()->label('Tanggal Masuk'),
-                Tables\Columns\TextColumn::make('date_co')->searchable()->sortable()->label('Tanggal Keluar'),
-                Tables\Columns\TextColumn::make('note')->searchable()->sortable()->label('Catatan'),
+                TextColumn::make('user.name')->searchable()->sortable()->label('User'),
+                TextColumn::make('orderer.name')->searchable()->sortable()->label('Order'),
+                TextColumn::make('quantity')->searchable()->sortable()->label('Jumlah'),
+                TextColumn::make('type')->searchable()->sortable()->label('Tipe'),
+                TextColumn::make('date_order')->searchable()->sortable()->label('Tanggal Pesan'),
+                TextColumn::make('date_ci')->searchable()->sortable()->label('Tanggal Masuk'),
+                TextColumn::make('date_co')->searchable()->sortable()->label('Tanggal Keluar'),
+                TextColumn::make('note')->searchable()->sortable()->label('Catatan'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

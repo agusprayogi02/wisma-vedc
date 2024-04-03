@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReservationResource\Pages;
-use App\Filament\Resources\ReservationResource\RelationManagers;
+
 use App\Models\Reservation;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
@@ -17,6 +17,9 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Set;
 
 class ReservationResource extends Resource
 {
@@ -29,10 +32,14 @@ class ReservationResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
-                ->schema([
                     BelongsToSelect::make('user_id')->relationship('user', 'name')->required()->preload()->searchable()->label('User')->default(auth()->user()->id),
-                    BelongsToSelect::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order'),
+                    BelongsToSelect::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order')
+                    ->hintAction(
+                        Action::make('Add New')
+                            ->requiresConfirmation()
+                            ->action(function ($state) {
+                                return redirect()->route('filament.resources.orderersResource');
+                            })),
                     TextInput::make('quantity')->required()->label('Jumlah'),
                     Select::make('type')
                         ->options([
@@ -43,8 +50,7 @@ class ReservationResource extends Resource
                     DatePicker::make('date_ci')->native(false)->required()->label('Tanggal Masuk'),
                     DatePicker::make('date_co')->native(false)->required()->label('Tanggal Keluar'),
                     TextInput::make('note')->nullable()->label('Catatan'),
-                ])
-                ->columns(2),
+
             ]);
     }
 
@@ -77,11 +83,12 @@ class ReservationResource extends Resource
     }
 
     public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+{
+    return [
+        OrdererRelationManager::class,
+    ];
+}
+
 
     public static function getPages(): array
     {

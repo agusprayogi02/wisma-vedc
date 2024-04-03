@@ -3,13 +3,16 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReservationResource\Pages;
+use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -46,9 +49,24 @@ class ReservationResource extends Resource
                         'PNBP' => 'PNBP',
                         'DIPA' => 'DIPA'
                     ])->default('DIPA')->required()->label('Jenis Biaya'),
-                DateTimePicker::make('date_order')->default(now())->readOnly()->required()->label('Tanggal Pesan'),
-                DatePicker::make('date_ci')->native(false)->required()->label('Tanggal Masuk'),
-                DatePicker::make('date_co')->native(false)->required()->label('Tanggal Keluar'),
+                DateTimePicker::make('date_order')->default(now())->readOnly()
+                    ->required()->label('Tanggal Pesan'),
+                DatePicker::make('date_ci')->native(false)->required()->displayFormat('d/m/Y')
+                    ->label('Tanggal Masuk')->closeOnDateSelection()->reactive()->afterStateUpdated(function ($state, Set $set) {
+                        $set('date_co', null);
+                    })->minDate(Carbon::now()),
+                DatePicker::make('date_co')->label('Tanggal Keluar')->closeOnDateSelection()
+                    ->displayFormat('d/m/Y')
+                    ->disabled(function (callable $get) {
+                        return $get('date_ci') == null;
+                    })->minDate(function (callable $get) {
+                        $min = $get('date_ci');
+                        if ($min == null) {
+                            return Carbon::now();
+                        } else {
+                            return Carbon::parse($min);
+                        }
+                    })->native(false)->reactive()->required(),
                 TextInput::make('note')->nullable()->label('Catatan'),
             ]);
     }
@@ -84,7 +102,7 @@ class ReservationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OrdererRelationManager::class,
         ];
     }
 

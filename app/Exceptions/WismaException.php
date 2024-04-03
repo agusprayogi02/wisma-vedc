@@ -21,16 +21,20 @@ class WismaException extends Exception implements Arrayable, Responsable
      * @param Throwable|null $previous
      */
     public function __construct(
-        public ResponseCode  $rc = ResponseCode::ERR_UNKNOWN,
-        ?string              $message = null,
+        public ResponseCode $rc = ResponseCode::ERR_UNKNOWN,
+        ?string $message = null,
         protected array|null $data = null,
-        ?Throwable           $previous = null
-    )
-    {
+        ?Throwable $previous = null
+    ) {
         if (is_null($message)) {
             $message = $rc->message();
         }
         parent::__construct($message, 0, $previous);
+    }
+
+    public function render()
+    {
+        return response()->json($this->toArray(), $this->rc->httpCode());
     }
 
     /**

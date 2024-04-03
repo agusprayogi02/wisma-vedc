@@ -59,6 +59,10 @@ class RoomItemReportResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('user.name')
+                    ->label('User')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('roomItem.room.code')
                     ->label('Ruangan')
                     ->searchable()

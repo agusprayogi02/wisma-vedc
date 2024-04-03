@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RoomTypeResource\Pages;
 use App\Filament\Resources\RoomTypeResource\RelationManagers;
 use App\Models\RoomType;
-use Filament\Forms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -76,6 +75,7 @@ class RoomTypeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

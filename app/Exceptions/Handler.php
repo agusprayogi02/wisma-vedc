@@ -7,16 +7,13 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Exceptions\RoleAlreadyExists;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+
 
 class Handler extends ExceptionHandler
 {
@@ -41,16 +38,16 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $e): Response|JsonResponse|SymfonyResponse
+    public function render($request, Throwable $e): \Illuminate\Http\Response|Throwable|\Illuminate\Http\JsonResponse|WismaException|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
     {
-        if ((false === $e instanceof WismaException) && $request->expectsJson()) {
+        if ($request->is('api/*')) {
             $e = $this->mapToWismaException($request, $e);
         }
 
         return parent::render($request, $e);
     }
 
-    private function mapToWismaException(Request $request, Throwable $e): WismaException|Throwable
+    private function mapToWismaException($request, Throwable $e): WismaException|Throwable
     {
         if ($e instanceof ModelNotFoundException) {
             return new WismaException(ResponseCode::ERR_ENTITY_NOT_FOUND, ResponseCode::ERR_ENTITY_NOT_FOUND->message(), previous: $e);
@@ -69,7 +66,7 @@ class Handler extends ExceptionHandler
         }
 
 //        if ($e instanceof OAuthServerException || $e instanceof AuthenticationException) {
-//            return new MaasyaException(ResponseCode::ERR_AUTHENTICATION, $e->getMessage(), null, $e);
+//            return new WismaException(ResponseCode::ERR_AUTHENTICATION, $e->getMessage(), null, $e);
 //        }
 
         if ($e instanceof AuthenticationException) {
@@ -99,4 +96,5 @@ class Handler extends ExceptionHandler
             previous: $e
         );
     }
+
 }

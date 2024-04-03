@@ -72,7 +72,7 @@ enum ResponseCode
 
             self::ERR_UNKNOWN,
             self::ERR_METHOD_NOT_IMPLEMENTED => Response::HTTP_INTERNAL_SERVER_ERROR,
-            self::ERR_FORBIDDEN_ACCESS,
+            self::ERR_FORBIDDEN_ACCESS => Response::HTTP_FORBIDDEN,
             self::ERR_ACTION_UNAUTHORIZED => Response::HTTP_FORBIDDEN,
 
 

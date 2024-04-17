@@ -30,7 +30,7 @@ class CustomerResource extends Resource
             ->schema([
                 Select::make('reservation_id')
                     ->label('Reservation')
-                    ->relationship('order', 'name')
+                    ->relationship('reservation', 'orderer_id')
                     ->required()
                     ->preload()
                     ->searchable(),
@@ -44,8 +44,8 @@ class CustomerResource extends Resource
                     ->label('Nama')
                     ->required(),
                 Select::make('gender')->options([
-                    'perempuan' => 'Perempuan',
-                    'laki-laki' => 'Laki-laki',
+                    'P' => 'Perempuan',
+                    'L' => 'Laki-laki',
                 ])->required()->label('Jenis Kelamin'),
                 TextInput::make('address')
                     ->label('Alamat')

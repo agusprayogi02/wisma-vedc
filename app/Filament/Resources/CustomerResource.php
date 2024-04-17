@@ -29,8 +29,8 @@ class CustomerResource extends Resource
         return $form
             ->schema([
                 Select::make('reservation_id')
-                    ->label('Reservastion')
-                    ->relationship('reservation', 'id')
+                    ->label('Reservation')
+                    ->relationship('order', 'name')
                     ->required()
                     ->preload()
                     ->searchable(),
@@ -43,9 +43,10 @@ class CustomerResource extends Resource
                 TextInput::make('name')
                     ->label('Nama')
                     ->required(),
-                TextInput::make('gender')
-                    ->label('Jenis Kelamin')
-                    ->required(),
+                Select::make('gender')->options([
+                    'perempuan' => 'Perempuan',
+                    'laki-laki' => 'Laki-laki',
+                ])->required()->label('Jenis Kelamin'),
                 TextInput::make('address')
                     ->label('Alamat')
                     ->required(),
@@ -59,6 +60,14 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('reservation_id.orderer.name')
+                    ->label('Orderer')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('room_id.code')
+                    ->label('Room')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('name')
                     ->label('Nama')
                     ->searchable()

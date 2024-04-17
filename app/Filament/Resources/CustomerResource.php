@@ -5,10 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers;
 use App\Models\Customer;
+use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,12 +22,36 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Customer';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
+                Select::make('reservation_id')
+                    ->label('Reservastion')
+                    ->relationship('reservation', 'id')
+                    ->required()
+                    ->preload()
+                    ->searchable(),
+                Select::make('room_id')
+                    ->label('Room')
+                    ->relationship('room', 'code')
+                    ->required()
+                    ->preload()
+                    ->searchable(),
+                TextInput::make('name')
+                    ->label('Nama')
+                    ->required(),
+                TextInput::make('gender')
+                    ->label('Jenis Kelamin')
+                    ->required(),
+                TextInput::make('address')
+                    ->label('Alamat')
+                    ->required(),
+                TextInput::make('phone')
+                    ->label('Telepon')
+                    ->required(),
             ]);
     }
 
@@ -31,7 +59,22 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-
+                TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('gender')
+                    ->label('Jenis Kelamin')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('address')
+                    ->label('Alamat')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('phone')
+                    ->label('Telepon')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

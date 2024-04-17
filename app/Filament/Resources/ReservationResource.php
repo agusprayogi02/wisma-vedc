@@ -6,14 +6,19 @@ use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\RelationManagers;
 use App\Models\Reservation;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Set;
 
 class ReservationResource extends Resource
 {
@@ -26,15 +31,23 @@ class ReservationResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('user_id')->relationship('user', 'name')->required()->preload()->searchable()->label('User')->default(auth()->user()->id),
-                Select::make('orderer_id')->relationship('orderer', 'name')->required()->preload()->searchable()->label('Order'),
+                Select::make('user_id')->relationship('user', 'name')
+                    ->required()->preload()->disabled()->label('Petugas')->default(auth()->user()->id),
+                Select::make('orderer_id')->relationship('orderer', 'name')
+                    ->required()->preload()->searchable()->label('Order')
+                    ->hintAction(
+                        Action::make('Add New')
+                            ->requiresConfirmation()
+                            ->action(function ($state) {
+                                return redirect()->route('filament.resources.orderersResource');
+                            })),
                 TextInput::make('quantity')->required()->label('Jumlah'),
                 Select::make('type')
                     ->options([
                         'PNBP' => 'PNBP',
                         'DIPA' => 'DIPA'
-                    ])->required()->label('Tipe'),
-                DatePicker::make('date_order')->native(false)->required()->label('Tanggal Pesan'),
+                    ])->default('DIPA')->required()->label('Jenis Biaya'),
+                DateTimePicker::make('date_order')->default(now())->readOnly()->required()->label('Tanggal Pesan'),
                 DatePicker::make('date_ci')->native(false)->required()->label('Tanggal Masuk'),
                 DatePicker::make('date_co')->native(false)->required()->label('Tanggal Keluar'),
                 TextInput::make('note')->nullable()->label('Catatan'),
@@ -45,14 +58,14 @@ class ReservationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->searchable()->sortable()->label('User'),
-                Tables\Columns\TextColumn::make('orderer.name')->searchable()->sortable()->label('Order'),
-                Tables\Columns\TextColumn::make('quantity')->searchable()->sortable()->label('Jumlah'),
-                Tables\Columns\TextColumn::make('type')->searchable()->sortable()->label('Tipe'),
-                Tables\Columns\TextColumn::make('date_order')->searchable()->sortable()->label('Tanggal Pesan'),
-                Tables\Columns\TextColumn::make('date_ci')->searchable()->sortable()->label('Tanggal Masuk'),
-                Tables\Columns\TextColumn::make('date_co')->searchable()->sortable()->label('Tanggal Keluar'),
-                Tables\Columns\TextColumn::make('note')->searchable()->sortable()->label('Catatan'),
+                TextColumn::make('user.name')->searchable()->sortable()->label('User'),
+                TextColumn::make('orderer.name')->searchable()->sortable()->label('Order'),
+                TextColumn::make('quantity')->searchable()->sortable()->label('Jumlah'),
+                TextColumn::make('type')->searchable()->sortable()->label('Tipe'),
+                TextColumn::make('date_order')->searchable()->sortable()->label('Tanggal Pesan'),
+                TextColumn::make('date_ci')->searchable()->sortable()->label('Tanggal Masuk'),
+                TextColumn::make('date_co')->searchable()->sortable()->label('Tanggal Keluar'),
+                TextColumn::make('note')->searchable()->sortable()->label('Catatan'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

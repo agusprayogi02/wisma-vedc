@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enum\ConstantEnum;
+use App\Enums\ConstantEnum;
 use App\Filament\Resources\BoardingHouseResource\Pages;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers;
 use App\Models\BoardingHouse;

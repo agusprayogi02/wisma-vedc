@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Models\Customer;
-use App\Models\Reservation;
 use App\Models\Room;
 use Closure;
 use Filament\Forms\Components\Component;
@@ -24,14 +23,14 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Customer';
+    protected static ?string $pluralModelLabel = 'Customer';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('reservation_id')
-                    ->label('Pemesan')
+                    ->label('Reservasi')
                     ->relationship('reservation', 'id')
                     ->required()
                     ->preload()
@@ -40,14 +39,13 @@ class CustomerResource extends Resource
                     ->label('Ruang')
                     ->relationship('room', 'code')
                     ->rules([
-                        fn(Get $get, Component $component): Closure =>
-                        function (string $attr, $value, Closure $fail) use ($get, $component) {
+                        fn(Get $get, Component $component): Closure => function (string $attr, $value, Closure $fail) use ($get, $component) {
                             $room = Room::find($value)->with('roomType')->first();
-                            $count = Customer::where([
+                            $cust = Customer::where([
                                 ['reservation_id', '=', $get('reservation_id')],
                                 ['room_id', '=', $value],
                             ])->count();
-                            if ($count > $room->roomType->capacity) {
+                            if ($cust > $room->roomType->capacity) {
                                 $fail('Kamar ini sudah penuh!');
                             }
                         }
@@ -56,15 +54,13 @@ class CustomerResource extends Resource
                     ->preload()
                     ->searchable(),
                 TextInput::make('name')
-                    ->label('Nama')
-                    ->required(),
+                    ->label('Nama'),
                 Select::make('gender')->options([
                     'P' => 'Perempuan',
                     'L' => 'Laki-laki',
                 ])
                     ->rules([
-                        fn(Get $get, Component $component): Closure =>
-                        function (string $attr, $value, Closure $fail) use ($get, $component) {
+                        fn(Get $get, Component $component): Closure => function (string $attr, $value, Closure $fail) use ($get, $component) {
                             $existCustomer = Customer::where([
                                 ['reservation_id', '=', $get('reservation_id')],
                                 ['room_id', '=', $get('room_id')],
@@ -81,11 +77,9 @@ class CustomerResource extends Resource
                         }
                     ])->required()->label('Jenis Kelamin'),
                 TextInput::make('address')
-                    ->label('Alamat')
-                    ->required(),
+                    ->label('Alamat'),
                 TextInput::make('phone')
-                    ->label('Telepon')
-                    ->required(),
+                    ->label('Telepon'),
             ]);
     }
 

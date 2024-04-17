@@ -6,10 +6,10 @@ use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
 use App\Models\Reservation;
 use Carbon\Carbon;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
@@ -25,7 +25,7 @@ class ReservationResource extends Resource
     protected static ?string $model = Reservation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Reservasi';
+    protected static ?string $pluralModelLabel = 'Reservasi';
 
     public static function form(Form $form): Form
     {
@@ -34,15 +34,19 @@ class ReservationResource extends Resource
                 Select::make('user_id')->relationship('user', 'name')
                     ->required()->preload()->label('Petugas')->default(auth()->user()->id),
                 Select::make('orderer_id')->relationship('orderer', 'name')
-                    ->required()->preload()->searchable()->label('Order')
-                    ->hintAction(
-                        Action::make('Add New')
-                            ->icon('heroicon-m-plus')
-                            ->requiresConfirmation()
-                            ->action(function ($state) {
-                                return redirect()->route('filament.admin.resources.orderers.create');
-                            })
-                    ),
+                    ->required()->preload()->searchable()->label('Pemesan')
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->label('Nama')
+                            ->required(),
+                        Textarea::make('address')
+                            ->label('Alamat')
+                            ->required(),
+                        TextInput::make('phone')
+                            ->label('No Telepon (08XXX)')
+                            ->numeric()
+                            ->required(),
+                    ]),
                 TextInput::make('quantity')->required()->label('Jumlah'),
                 Select::make('type')
                     ->options([

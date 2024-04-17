@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrdererResource\Pages;
 use App\Filament\Resources\OrdererResource\RelationManagers;
 use App\Models\Orderer;
-use Filament\Forms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -22,7 +21,7 @@ class OrdererResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Pemesan';
+    protected static ?string $pluralModelLabel = 'Pemesan';
 
     public static function form(Form $form): Form
     {

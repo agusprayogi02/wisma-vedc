@@ -7,7 +7,6 @@ use App\Filament\Resources\RoomResource\RelationManagers;
 use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -21,8 +20,7 @@ class RoomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Ruangan';
-    protected static ?string $modelLabel = 'Ruangan';
+    protected static ?string $pluralModelLabel = 'Ruangan';
 
     public static function form(Form $form): Form
     {

@@ -69,7 +69,7 @@ class CustomerResource extends Resource
                                 'P' => 'Perempuan',
                                 'L' => 'Laki-laki',
                             ];
-                            if ($existCustomer->exists()) {
+                            if ($existCustomer !== null) {
                                 if ($existCustomer->gender !== $value) {
                                     $fail('Kamar ini untuk ' . $genders[$existCustomer->gender]);
                                 }

@@ -18,6 +18,11 @@ class Customer extends Model
         return $this->belongsTo(Reservation::class);
     }
 
+    public function order ()
+    {
+        return $this->belongsTo(Orderer::class);
+    }
+
     public function room()
     {
         return $this->belongsTo(Room::class);

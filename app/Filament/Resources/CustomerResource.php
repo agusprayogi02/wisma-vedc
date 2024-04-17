@@ -30,7 +30,7 @@ class CustomerResource extends Resource
             ->schema([
                 Select::make('reservation_id')
                     ->label('Reservation')
-                    ->relationship('reservation', 'orderer_id')
+                    ->relationship('reservation.orderer', 'name')
                     ->required()
                     ->preload()
                     ->searchable(),

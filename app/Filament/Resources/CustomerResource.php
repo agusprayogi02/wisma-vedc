@@ -60,11 +60,11 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('reservation_id.orderer.name')
+                TextColumn::make('reservation.orderer.name')
                     ->label('Orderer')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('room_id.code')
+                TextColumn::make('room.code')
                     ->label('Room')
                     ->searchable()
                     ->sortable(),

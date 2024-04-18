@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Enums\ResponseCode;
 use App\Exceptions\WismaException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Room\UpdateRoomRequest;
 use App\Http\Resources\Room\RoomResourceCollection;
 use App\Models\RoomStatus;
 use App\Repositories\Room\RoomRepository;
-use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
@@ -85,13 +85,8 @@ class RoomController extends Controller
     /**
      * @throws \Throwable
      */
-    public function updateRoomStatus(Request $request, $id)
+    public function updateRoomStatus(UpdateRoomRequest $request, $id)
     {
-        throw_if(
-            !$request->has("room_status_id"),
-            new WismaException(ResponseCode::ERR_VALIDATION, "Room status id is required")
-        );
-
         $check_room_status = RoomStatus::find($request->room_status_id);
         throw_if(
             !$check_room_status,

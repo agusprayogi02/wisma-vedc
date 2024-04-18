@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 //});
 
 // Rute tanpa autentikasi
-Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('rooms', [RoomController::class, 'index']);

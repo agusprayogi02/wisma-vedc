@@ -20,12 +20,12 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
         $this->model = $model;
     }
 
-    public function getRooms()
+    public function getRooms(): \Illuminate\Database\Eloquent\Collection|array
     {
         return $this->model->with(['boardingHouse', 'roomStatus', 'roomType'])->get();
     }
 
-    public function getTotalRoomUsedToday()
+    public function getTotalRoomUsedToday(): \Illuminate\Database\Eloquent\Collection|array
     {
         return $this->model
             ->whereIn('room_status_id', [1, 3, 4])

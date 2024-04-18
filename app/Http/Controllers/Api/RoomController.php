@@ -41,7 +41,7 @@ class RoomController extends Controller
     {
         $total = $this->roomRepository->getTotalRoomUsedToday();
         return $this->response(
-            ["total" => $total],
+            $total,
             $this->getResponseMessage(__FUNCTION__)
         );
     }
@@ -82,6 +82,9 @@ class RoomController extends Controller
         );
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function updateRoomStatus(Request $request, $id)
     {
         throw_if(
@@ -96,14 +99,9 @@ class RoomController extends Controller
         );
 
         $update = $this->roomRepository->update($id, $request->all());
-        throw_if(
+        return $this->response(
             $update,
-            new WismaException(ResponseCode::SUCCESS, "Room status updated")
-        );
-
-        throw_if(
-            !$update,
-            new WismaException(ResponseCode::ERR_VALIDATION, "Room status not updated")
+            $this->getResponseMessage(__FUNCTION__)
         );
     }
 }

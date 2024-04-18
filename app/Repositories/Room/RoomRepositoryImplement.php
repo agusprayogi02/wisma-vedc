@@ -3,7 +3,6 @@
 namespace App\Repositories\Room;
 
 use App\Models\Room;
-use Illuminate\Http\Request;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class RoomRepositoryImplement extends Eloquent implements RoomRepository
@@ -26,17 +25,12 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository
         return $this->model->with(['boardingHouse', 'roomStatus', 'roomType'])->get();
     }
 
-    public function getTotalRoomUsedToday(): array
+    public function getTotalRoomUsedToday()
     {
-        $roomsUsed = $this->model
+        return $this->model
             ->whereIn('room_status_id', [1, 3, 4])
             ->with(['boardingHouse', 'roomStatus', 'roomType'])
             ->get();
-
-        return [
-            'total' => $roomsUsed->count(),
-            'rooms' => $roomsUsed
-        ];
     }
 
     public function getTotalRoomKotorToday(): array

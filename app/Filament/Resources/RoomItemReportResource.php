@@ -6,8 +6,6 @@ use App\Filament\Resources\RoomItemReportResource\Pages;
 use App\Filament\Resources\RoomItemReportResource\RelationManagers;
 use App\Models\RoomItem;
 use App\Models\RoomItemReport;
-use Filament\Forms;
-use Filament\Forms\Components\BelongsToManyMultiSelect;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -24,7 +22,7 @@ class RoomItemReportResource extends Resource
     protected static ?string $model = RoomItemReport::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Laporan Barang Ruangan';
+    protected static ?string $pluralModelLabel = 'Laporan Barang Ruangan';
 
     public static function form(Form $form): Form
     {

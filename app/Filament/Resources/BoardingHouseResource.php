@@ -6,7 +6,6 @@ use App\Enums\ConstantEnum;
 use App\Filament\Resources\BoardingHouseResource\Pages;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers;
 use App\Models\BoardingHouse;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -25,8 +24,7 @@ class BoardingHouseResource extends Resource
     protected static ?string $model = BoardingHouse::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Asrama';
-    protected static ?string $modelLabel = 'Asrama';
+    protected static ?string $pluralModelLabel = 'Asrama';
 
     public static function form(Form $form): Form
     {

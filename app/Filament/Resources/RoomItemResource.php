@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RoomItemResource\Pages;
 use App\Filament\Resources\RoomItemResource\RelationManagers;
 use App\Models\RoomItem;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -21,7 +20,7 @@ class RoomItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Ruangan Barang';
+    protected static ?string $pluralModelLabel = 'Ruangan Barang';
 
     public static function form(Form $form): Form
     {

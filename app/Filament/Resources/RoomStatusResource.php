@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RoomStatusResource\Pages;
 use App\Filament\Resources\RoomStatusResource\RelationManagers;
 use App\Models\RoomStatus;
-use Filament\Forms;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -25,7 +24,7 @@ class RoomStatusResource extends Resource
     protected static ?string $model = RoomStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Status Ruangan';
+    protected static ?string $pluralModelLabel = 'Status Ruangan';
 
     public static function form(Form $form): Form
     {

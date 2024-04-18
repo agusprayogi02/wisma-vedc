@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RoomStatusesSeeder extends Seeder
 {
@@ -20,6 +19,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'V',
@@ -27,6 +28,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'OC',
@@ -34,6 +37,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'OD',
@@ -41,6 +46,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'VCI',
@@ -48,6 +55,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'VC',
@@ -55,6 +64,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'VD',
@@ -62,34 +73,44 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name'=> 'COMP',
+                'name' => 'COMP',
                 'description' => 'Compliment, Kamar yang tereister oleh tamu hotel namun tidak dikenakan biaya',
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name'=> 'HU',
+                'name' => 'HU',
                 'description' => 'Kamar yang teregister tetapi digunakan oleh pihak managemen hotel.',
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name' =>'DND',
+                'name' => 'DND',
                 'description' => 'Do Not Disturb, kamar yang sedang ditempati oleh tamu hotel yang tidak ingin diganggu',
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'nama'=>'SO',
-                'description'=>'Sleep Out, Seorang tamu masih teregister di hotel namun tidak menginap di hotel',
+                'nama' => 'SO',
+                'description' => 'Sleep Out, Seorang tamu masih teregister di hotel namun tidak menginap di hotel',
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'SKIP',
@@ -97,6 +118,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'OOO',
@@ -104,6 +127,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'OS',
@@ -111,6 +136,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'DO/ED',
@@ -118,6 +145,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'EA',
@@ -125,6 +154,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'CO',
@@ -132,6 +163,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'LCO',
@@ -139,6 +172,8 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'ONL',
@@ -146,13 +181,17 @@ class RoomStatusesSeeder extends Seeder
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'DL',
-                'description'=>'Double Lock, Permintaan tamu ke pihak hotel untuk melakukan double lock sehingga tidak seorangpun dapat masuk ke kamar tersebut.',
+                'description' => 'Double Lock, Permintaan tamu ke pihak hotel untuk melakukan double lock sehingga tidak seorangpun dapat masuk ke kamar tersebut.',
                 'color' => '',
                 'icon' => '',
                 'is_active' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ];
         DB::table('room_statuses')->insert($roomStatuses);

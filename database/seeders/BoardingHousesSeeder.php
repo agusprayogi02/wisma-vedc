@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\BoardingHouse;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class BoardingHousesSeeder extends Seeder
 {
@@ -13,7 +11,7 @@ class BoardingHousesSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {   
+    {
         $boardingHouse = [
             [
                 'name' => 'Gedung Bima Hall',
@@ -21,6 +19,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Gedung Kendedes',
@@ -28,6 +28,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Gedung Ken Umang',
@@ -35,6 +37,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Gedung Ken Arok',
@@ -42,6 +46,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Paviliun',
@@ -49,6 +55,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Guest House',
@@ -56,6 +64,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Gedung Kertajaya',
@@ -63,6 +73,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Gedung Bima Graha',
@@ -70,6 +82,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl Teluk Mandar Tromol Pos 5, Arjosari Malang',
                 'type' => 'internal',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Hotel Harris Malang',
@@ -77,6 +91,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl. Ahmad Yani Utara',
                 'type' => 'external',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Hotel Grand Mercure Malang',
@@ -84,6 +100,8 @@ class BoardingHousesSeeder extends Seeder
                 'note' => '',
                 'address' => 'Jl. Panji Suroso, Blimbing Malang',
                 'type' => 'external',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ];
         DB::table('boarding_houses')->insert($boardingHouse);

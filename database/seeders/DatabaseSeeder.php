@@ -21,12 +21,32 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
         ]);
+        User::create([
+            'name' => 'Head',
+            'email' => 'head@mail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        User::create([
+            'name' => 'Keeper',
+            'email' => 'keeper@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        User::create([
+            'name' => 'Guest',
+            'email' => 'guest@mail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+        ]);
+
         $this->call([
             BoardingHousesSeeder::class,
             RoomStatusesSeeder::class,
             RoomTypesSeeder::class,
             RoomSeeder::class,
             ItemSeeder::class,
+            OrdererSeeder::class
         ]);
     }
 }

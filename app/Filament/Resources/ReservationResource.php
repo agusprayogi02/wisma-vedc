@@ -32,7 +32,7 @@ class ReservationResource extends Resource
         return $form
             ->schema([
                 Select::make('user_id')->relationship('user', 'name')
-                    ->required()->preload()->label('Petugas')->default(auth()->user()->id),
+                    ->required()->preload()->label('Petugas')->default(auth()->user()->id)->disabled(),
                 Select::make('orderer_id')->relationship('orderer', 'name')
                     ->required()->preload()->searchable()->label('Pemesan')
                     ->createOptionForm([
@@ -75,6 +75,9 @@ class ReservationResource extends Resource
             ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function table(Table $table): Table
     {
         return $table

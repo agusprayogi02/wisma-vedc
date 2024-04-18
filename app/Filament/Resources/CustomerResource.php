@@ -37,7 +37,6 @@ class CustomerResource extends Resource
                 Select::make('room_id')
                     ->label('Room')
                     ->relationship('room', 'code')
-                    ->required()
                     ->preload()
                     ->searchable(),
                 TextInput::make('name')

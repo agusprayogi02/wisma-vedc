@@ -38,4 +38,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('room_item_reports/total', [RoomItemReportController::class, 'total']);
     Route::get('room_user_reports', [RoomUserController::class, 'RoomUser']);
     Route::get('room_items', [RoomItemController::class, 'RoomItem']);
+
+    Route::put('rooms/{id}', [RoomController::class, 'updateRoomStatus']);
 });

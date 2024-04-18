@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\RoomItemController;
 use App\Http\Controllers\Api\RoomItemReportController;
@@ -40,4 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('room_items', [RoomItemController::class, 'RoomItem']);
 
     Route::put('rooms/{id}', [RoomController::class, 'updateRoomStatus']);
+
+    Route::get('room_capacity/{tgl}', [CustomerController::class, 'getRoomCapacity']);
+    Route::put('book_room/{customerId}', [CustomerController::class, 'bookRoom']);
 });

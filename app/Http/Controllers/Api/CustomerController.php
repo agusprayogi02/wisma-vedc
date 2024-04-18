@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Enums\ResponseCode;
 use App\Exceptions\WismaException;
 use App\Http\Controllers\Controller;
-use App\Repositories\Customer\CustomerRepository;
-use App\Models\Customer;
-use Illuminate\Http\Request;
 use App\Models\Room;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\RoomType;
+use App\Repositories\Customer\CustomerRepository;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -25,7 +22,8 @@ class CustomerController extends Controller
         ];
     }
 
-    public function getRoomCapacity($tgl){
+    public function getRoomCapacity($tgl)
+    {
         $roomCapacity = $this->customerRepository->getRoomCapacity($tgl);
         return $this->response(
             ["roomCapacity" => $roomCapacity],
@@ -33,6 +31,9 @@ class CustomerController extends Controller
         );
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function bookRoom(Request $request, $customerId)
     {
         throw_if(
@@ -73,9 +74,4 @@ class CustomerController extends Controller
             new WismaException(ResponseCode::ERR_ACTION_UNAUTHORIZED, "Failed to update data")
         );
     }
-
-
-
-
-
 }

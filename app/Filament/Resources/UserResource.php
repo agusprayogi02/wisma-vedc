@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,6 +28,7 @@ class UserResource extends Resource
                 TextInput::make('name')->label('Name')->required(),
                 TextInput::make('email')->label('Email')->required(),
                 TextInput::make('password')->label('Password')->password()->revealable()->required(),
+                Select::make('roles')->multiple()->relationship('roles', 'name'),
             ]);
     }
 

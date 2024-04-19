@@ -31,7 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('rooms/total_used', [RoomController::class, 'totalRoomUsedToday']);
     Route::get('rooms/total_ready', [RoomController::class, 'totalRoomReadyToday']);
     Route::get('rooms/total_kotor', [RoomController::class, 'totalRoomKotorToday']);
-    Route::get('rooms/total_used_by_asrama', [RoomController::class, 'totalRoomUsedByAsramaToday']);
+    Route::get('rooms/total_used_by_asrama/{boarding_house_id}', [RoomController::class, 'totalRoomUsedByAsramaToday']);
+
     Route::get('rooms/total', [RoomController::class, 'totalRoom']);
     Route::get('room_item_reports', [RoomItemReportController::class, 'index']);
     Route::get('room_item_reports/total_rusak', [RoomItemReportController::class, 'totalRusak']);

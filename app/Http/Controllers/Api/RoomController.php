@@ -73,14 +73,14 @@ class RoomController extends Controller
         );
     }
 
-    public function totalRoomUsedByAsramaToday()
-    {
-        $total = $this->roomRepository->getTotalRoomUsedByAsramaToday();
-        return $this->response(
-            ["total" => $total],
-            $this->getResponseMessage(__FUNCTION__)
-        );
-    }
+    public function totalRoomUsedByAsramaToday($boarding_house_id)
+{
+    $total = $this->roomRepository->getTotalRoomUsedByAsramaToday($boarding_house_id); // Mengirimkan ID asrama sebagai parameter
+    return $this->response(
+        ["total" => $total],
+        $this->getResponseMessage(__FUNCTION__)
+    );
+}
 
     /**
      * @throws \Throwable

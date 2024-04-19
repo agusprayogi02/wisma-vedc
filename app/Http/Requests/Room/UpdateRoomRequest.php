@@ -22,14 +22,14 @@ class UpdateRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "room_type_id" => "required|numeric",
+            "room_status_id" => "required|numeric",
         ];
     }
 
     public function messages(): array
     {
         return [
-            "room_type_id.required" => "Room type is required",
+            "room_status_id.required" => "Room status is required",
         ];
     }
 }

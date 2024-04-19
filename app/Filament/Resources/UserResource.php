@@ -27,8 +27,8 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('name')->label('Name')->required(),
                 TextInput::make('email')->label('Email')->required(),
-                TextInput::make('password')->label('Password')->password()->revealable()->required(),
-                Select::make('roles')->multiple()->relationship('roles', 'name'),
+                TextInput::make('password')->label('Password')->password()->revealable()->required()->hidden(fn($record) => $record->exists),
+                Select::make('roles')->multiple()->relationship('roles', 'name')->preload(),
             ]);
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Sentry\Laravel\SentryHandler;
 use Spatie\Permission\Exceptions\RoleAlreadyExists;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -40,7 +41,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e): \Illuminate\Http\Response|Throwable|\Illuminate\Http\JsonResponse|WismaException|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
     {
-        if ($request->is('api/*')) {
+        if ($request->is('api/*') && (false === $e instanceof WismaException)) {
             $e = $this->mapToWismaException($request, $e);
         }
 
@@ -65,7 +66,7 @@ class Handler extends ExceptionHandler
             return new WismaException(ResponseCode::ERR_VALIDATION, $e->getMessage(), previous: $e);
         }
 
-//        if ($e instanceof OAuthServerException || $e instanceof AuthenticationException) {
+        //        if ($e instanceof OAuthServerException || $e instanceof AuthenticationException) {
 //            return new WismaException(ResponseCode::ERR_AUTHENTICATION, $e->getMessage(), null, $e);
 //        }
 

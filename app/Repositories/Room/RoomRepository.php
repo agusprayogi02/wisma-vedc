@@ -14,7 +14,7 @@ interface RoomRepository extends Repository
 
     public function getTotalRoomReadyToday(): array;
 
-    public function getTotalRoomUsedByAsramaToday(): int;
+    public function getTotalRoomUsedByAsramaToday($boarding_house_id): int;
 
     public function getTotalRoom(): int;
 

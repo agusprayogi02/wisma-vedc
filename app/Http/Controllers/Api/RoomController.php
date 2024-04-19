@@ -25,6 +25,7 @@ class RoomController extends Controller
             "totalRoomKotorToday" => "Total room kotor today",
             "totalRoomReadyToday" => "Total room ready today",
             "totalRoomUsedByAsramaToday" => "Total room used by asrama today",
+            "updateRoomStatus" => "Update room status successfully",
         ];
     }
 
@@ -73,9 +74,9 @@ class RoomController extends Controller
         );
     }
 
-    public function totalRoomUsedByAsramaToday()
+    public function totalRoomUsedByAsramaToday($boarding_house_id)
     {
-        $total = $this->roomRepository->getTotalRoomUsedByAsramaToday();
+        $total = $this->roomRepository->getTotalRoomUsedByAsramaToday($boarding_house_id); // Mengirimkan ID asrama sebagai parameter
         return $this->response(
             ["total" => $total],
             $this->getResponseMessage(__FUNCTION__)
@@ -95,7 +96,7 @@ class RoomController extends Controller
 
         $update = $this->roomRepository->update($id, $request->all());
         return $this->response(
-            $update,
+            ["data" => $update],
             $this->getResponseMessage(__FUNCTION__)
         );
     }

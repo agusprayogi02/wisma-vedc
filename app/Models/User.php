@@ -5,7 +5,6 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -61,10 +60,5 @@ class User extends Authenticatable
     public function roomItemReports()
     {
         return $this->hasMany(RoomItemReport::class);
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->hasRole('super-admin');
     }
 }

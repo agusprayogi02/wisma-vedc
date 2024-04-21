@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\ResponseCode;
 use App\Exceptions\WismaException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\BookedRoomRequest;
 use App\Models\Room;
 use App\Repositories\Customer\CustomerRepository;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class CustomerController extends Controller
     {
         $roomCapacity = $this->customerRepository->getRoomCapacity($tgl);
         return $this->response(
-            ["roomCapacity" => $roomCapacity],
+            ["room_capacity" => $roomCapacity],
             $this->responseMessages["getRoomCapacity"]
         );
     }
@@ -34,13 +35,8 @@ class CustomerController extends Controller
     /**
      * @throws \Throwable
      */
-    public function bookRoom(Request $request, $customerId)
+    public function bookRoom(BookedRoomRequest $request, $customerId)
     {
-        throw_if(
-            !$request->has('room_id'),
-            new WismaException(ResponseCode::ERR_VALIDATION, "Room ID is required")
-        );
-
         $customer = $this->customerRepository->getCustomerData($customerId);
         $reservationDate = $customer->reservation ? $customer->reservation->date_ci : null;
         $room = Room::find($request->room_id);

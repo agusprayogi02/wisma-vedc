@@ -49,9 +49,9 @@ class RoomController extends Controller
 
     public function totalRoomKotorToday()
     {
-        $total = $this->roomRepository->getTotalRoomKotorToday();
+        $room = $this->roomRepository->getTotalRoomKotorToday();
         return $this->response(
-            ["total" => $total],
+            $room,
             $this->getResponseMessage(__FUNCTION__)
         );
     }
@@ -60,7 +60,7 @@ class RoomController extends Controller
     {
         $total = $this->roomRepository->getTotalRoomReadyToday();
         return $this->response(
-            ["total" => $total],
+            $total,
             $this->getResponseMessage(__FUNCTION__)
         );
     }
@@ -96,7 +96,7 @@ class RoomController extends Controller
 
         $update = $this->roomRepository->update($id, $request->all());
         return $this->response(
-            ["data" => $update],
+            $update,
             $this->getResponseMessage(__FUNCTION__)
         );
     }

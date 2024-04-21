@@ -44,6 +44,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::put('rooms/{id}', [RoomController::class, 'updateRoomStatus']);
 
-    Route::get('room_capacity/{tgl}', [CustomerController::class, 'getRoomCapacity']);
-    Route::put('book_room/{customerId}', [CustomerController::class, 'bookRoom']);
+    Route::get('customer/room/{tgl}', [CustomerController::class, 'getRoomCapacity']);
+    Route::put('customer/booking_room/{customerId}', [CustomerController::class, 'bookRoom']);
 });

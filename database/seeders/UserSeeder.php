@@ -20,35 +20,40 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $admin->assignRole('super_admin');
-        User::create([
+        $keeper1 = User::create([
             'name' => 'Keeper 1',
             'email' => 'keeper1@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
         ]);
-        User::create([
+        $keeper1->assignRole('keeper');
+        $keeper2 = User::create([
             'name' => 'Keeper 2',
             'email' => 'keeper2@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
         ]);
-        User::create([
+        $keeper2->assignRole('keeper');
+        $keeper3 = User::create([
             'name' => 'Keeper 3',
             'email' => 'keeper3@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
         ]);
-        User::create([
+        $keeper3->assignRole('keeper');
+        $head = User::create([
             'name' => 'Head',
             'email' => 'head@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
         ]);
-        User::create([
+        $head->assignRole('head');
+        $geust = User::create([
             'name' => 'Guest',
             'email' => 'guest@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
         ]);
+        $geust->assignRole('guest');
     }
 }

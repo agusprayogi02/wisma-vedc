@@ -28,5 +28,4 @@ class RoomItemController extends Controller
             $this->getResponseMessage(__FUNCTION__)
         );
     }
-
 }

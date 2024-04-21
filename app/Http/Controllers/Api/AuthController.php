@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\WismaException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\AuthenticateRequest;
 use App\Http\Resources\Auth\AuthResource;
 use App\Http\Response;
+use App\Models\User;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\Request;
-use \App\Exceptions\WismaException;
-use App\Http\Requests\Auth\AuthenticateRequest;
+use Spatie\Permission\Models\Permission;
 
 class AuthController extends Controller
 {
@@ -19,6 +21,7 @@ class AuthController extends Controller
     {
         $this->responseMessages = [
             "authenticate" => "Login user successfully",
+            "index" => "Load Permissions successfully",
         ];
     }
 
@@ -35,6 +38,24 @@ class AuthController extends Controller
 
         return $this->response(
             new AuthResource($response),
+            $this->getResponseMessage(__FUNCTION__)
+        );
+    }
+
+    public function index(Request $request)
+    {
+        if (asset($request->user_id)) {
+            $permision = User::where('id', $request->user_id)->first()->getAllPermissions()->map(function ($p) {
+                return [
+                    'name' => $p->name,
+                    'guard_name' => $p->guard_name,
+                ];
+            })->toArray();
+        } else {
+            $permision = Permission::get(['name', 'guard_name'])->toArray();
+        }
+        return $this->response(
+            $permision,
             $this->getResponseMessage(__FUNCTION__)
         );
     }

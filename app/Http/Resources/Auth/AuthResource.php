@@ -20,7 +20,7 @@ class AuthResource extends JsonResource
             "id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
-            "role" => $user->getRoleNames(),
+            "roles" => $user->getRoleNames(),
             "access_token" => $token
         ];
     }

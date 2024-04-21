@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield;
 
     /**
      * The attributes that are mass assignable.
@@ -61,8 +63,8 @@ class User extends Authenticatable
         return $this->hasMany(RoomItemReport::class);
     }
 
-//    public function canAccessPanel(Panel $panel): bool
-//    {
-//        return $this->hasVerifiedEmail();
-//    }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole('super-admin');
+    }
 }

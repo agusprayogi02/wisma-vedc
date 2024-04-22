@@ -12,12 +12,17 @@ return new class extends Migration {
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained();
-            $table->foreignId('room_id')->constrained();
-            $table->string('name', 150)->nullable();
-            $table->enum('gender', ['L', 'P'])->nullable();
+            $table->foreignId('reservation_id')->constrained(); // id_xkelas
+            $table->foreignId('room_id')->nullable()->constrained();
+            $table->bigInteger('id_xcalonpeserta')->nullable();
+            $table->bigInteger('id_xkelas')->nullable();
+            $table->string('nik', 16)->nullable();
+            $table->string('name', 150)->nullable(); // nama
+            $table->string('npsn', 16)->nullable();
+            $table->string('sekolah', 150)->nullable(); // sekolah
+            $table->enum('gender', ['L', 'P'])->nullable(); // jenis_kelamin
             $table->string('address')->nullable();
-            $table->string('phone', 15)->nullable();
+            $table->string('phone', 15)->nullable(); // hp
             $table->softDeletes();
             $table->timestamps();
         });

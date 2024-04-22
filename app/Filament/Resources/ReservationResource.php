@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Imports\ReservationImporter;
 use App\Filament\Resources\ReservationResource\Pages;
+use App\Filament\Resources\ReservationResource\RelationManagers\CustomersRelationManager;
 use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
 use App\Models\Reservation;
 use Carbon\Carbon;
@@ -97,6 +99,9 @@ class ReservationResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
+            ->headerActions([
+                Tables\Actions\ImportAction::make()->importer(ReservationImporter::class),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -109,6 +114,7 @@ class ReservationResource extends Resource
     public static function getRelations(): array
     {
         return [
+            CustomersRelationManager::class,
             OrdererRelationManager::class,
         ];
     }

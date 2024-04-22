@@ -14,6 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('orderer_id')->constrained();
             $table->foreignId('user_id')->constrained();
+            $table->bigInteger('id_xkelas')->nullable();
+            $table->string('nick_name')->nullable();
+            $table->string('nama_xdiklat_kategori', 50)->nullable();
             $table->integer('quantity');
             $table->enum('type', ["PNBP", "DIPA"]);
             $table->timestamp('date_order');

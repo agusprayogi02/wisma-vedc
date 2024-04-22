@@ -82,8 +82,8 @@ class CustomersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('room.code'),
+                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('room.code')->searchable()->sortable()->label('Ruang'),
                 TextColumn::make('gender')
                     ->label('Jenis Kelamin')
                     ->searchable()

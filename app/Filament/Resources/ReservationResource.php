@@ -49,6 +49,7 @@ class ReservationResource extends Resource
                             ->numeric()
                             ->required(),
                     ]),
+                TextInput::make('nick_name')->required()->label('Nama Kegiatan'),
                 TextInput::make('quantity')->required()->label('Jumlah'),
                 Select::make('type')
                     ->options([
@@ -84,6 +85,7 @@ class ReservationResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('nick_name')->searchable()->sortable()->label('User'),
                 TextColumn::make('user.name')->searchable()->sortable()->label('User'),
                 TextColumn::make('orderer.name')->searchable()->sortable()->label('Order'),
                 TextColumn::make('quantity')->searchable()->sortable()->label('Jumlah'),

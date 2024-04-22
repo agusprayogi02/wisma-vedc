@@ -17,6 +17,7 @@ class ReservationSeeder extends Seeder
         $data = [];
         for ($i = 0; $i < 5; $i++) {
             $data[] = [
+                'nick_name' => fake('id_ID')->jobTitle,
                 'orderer_id' => random_int(1, 10),
                 'user_id' => 5,
                 'quantity' => 6,

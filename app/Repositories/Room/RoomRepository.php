@@ -3,6 +3,7 @@
 namespace App\Repositories\Room;
 
 use App\Models\Room;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoomRepository
 {
@@ -19,9 +20,12 @@ class RoomRepository
         $this->model = $model;
     }
 
-    public function getRooms(): \Illuminate\Database\Eloquent\Builder|\LaravelIdea\Helper\App\Models\_IH_Room_QB
+    /**
+     * @return Room[]|LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getRooms(int $perPage): LengthAwarePaginator|array|\Illuminate\Pagination\LengthAwarePaginator
     {
-        return $this->model->with(['boardingHouse', 'roomStatus', 'roomType'])->jsonPaginate();
+        return $this->model->with(['boardingHouse', 'roomStatus', 'roomType'])->paginate($perPage);
     }
 
     public function getTotalRoomUsedToday(): \Illuminate\Database\Eloquent\Collection|array

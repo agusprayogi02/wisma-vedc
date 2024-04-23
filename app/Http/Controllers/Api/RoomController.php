@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\ResponseCode;
 use App\Exceptions\WismaException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Room\PaginateRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
 use App\Http\Resources\Room\RoomResourceCollection;
 use App\Models\RoomStatus;
@@ -29,9 +30,9 @@ class RoomController extends Controller
         ];
     }
 
-    public function index()
+    public function index(PaginateRoomRequest $request)
     {
-        $rooms = $this->roomRepository->getRooms();
+        $rooms = $this->roomRepository->getRooms($request->perPage ?? 10);
         return $this->response(
             new RoomResourceCollection($rooms),
             $this->getResponseMessage(__FUNCTION__)

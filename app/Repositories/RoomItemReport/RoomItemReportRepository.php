@@ -39,4 +39,9 @@ class RoomItemReportRepository
             ->where(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"), now()->format("Y-m"))
             ->sum('quantity');
     }
+
+    public function all(): array|\Illuminate\Pagination\LengthAwarePaginator
+    {
+        return $this->model->paginate(10);
+    }
 }

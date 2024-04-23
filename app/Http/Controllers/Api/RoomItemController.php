@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoomItem\PaginateRoomItemRequest;
 use App\Http\Resources\RoomItem\RoomItemResourceCollection;
 use App\Repositories\RoomItem\RoomItemRepository;
 
@@ -20,9 +21,9 @@ class RoomItemController extends Controller
         ];
     }
 
-    public function RoomItem()
+    public function RoomItem(PaginateRoomItemRequest $request)
     {
-        $roomItems = $this->roomItemRepository->getRoomItems();
+        $roomItems = $this->roomItemRepository->getRoomItems($request->perPage ?? 10);
         return $this->response(
             new RoomItemResourceCollection($roomItems),
             $this->getResponseMessage(__FUNCTION__)

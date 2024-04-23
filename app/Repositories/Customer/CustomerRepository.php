@@ -28,7 +28,7 @@ class CustomerRepository
         })->count();
     }
 
-    public function getCustomerData($id): Customer|\LaravelIdea\Helper\App\Models\_IH_Customer_C|array|null
+    public function getCustomerData($id): Customer|array|null
     {
         return $this->model->find($id);
     }

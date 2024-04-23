@@ -3,6 +3,7 @@
 namespace App\Repositories\RoomUser;
 
 use App\Models\RoomUser;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class RoomUserRepository
 {
@@ -21,5 +22,13 @@ class RoomUserRepository
         return $this->model
             ->groupBy('user_id')
             ->sum('poin');
+    }
+
+    /**
+     * @return RoomUser[]|LengthAwarePaginator
+     */
+    public function all(): LengthAwarePaginator|array
+    {
+        return $this->model->paginate(10);
     }
 }

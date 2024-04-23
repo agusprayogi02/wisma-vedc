@@ -4,8 +4,6 @@ namespace App\Repositories\RoomItem;
 
 use App\Models\RoomItem;
 use Illuminate\Database\Eloquent\Collection;
-use LaravelEasyRepository\Repository;
-use LaravelIdea\Helper\App\Models\_IH_RoomItem_C;
 
 class RoomItemRepository
 {
@@ -20,10 +18,10 @@ class RoomItemRepository
     }
 
     /**
-     * @return Collection|array|_IH_RoomItem_C
+     * @return Collection|array
      */
-    public function getRoomItems(): \Illuminate\Database\Eloquent\Collection|array|\LaravelIdea\Helper\App\Models\_IH_RoomItem_C
+    public function getRoomItems(int $perPage): \Illuminate\Database\Eloquent\Collection|array
     {
-        return $this->model->with(['room', 'item'])->get();
+        return $this->model->with(['room', 'item'])->paginate($perPage);
     }
 }

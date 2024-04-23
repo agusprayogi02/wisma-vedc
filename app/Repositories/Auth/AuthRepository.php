@@ -1,23 +1,21 @@
 <?php
 
-namespace App\Services\Auth;
+namespace App\Repositories\Auth;
 
-use App\Enums\HeaderPlatform;
 use App\Enums\ResponseCode;
 use App\Exceptions\WismaException;
 use App\Http\Requests\Auth\AuthenticateRequest;
 use App\Traits\ValidationInput;
-use LaravelEasyRepository\Service;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 
-class AuthServiceImplement extends Service implements AuthService
+class AuthRepository
 {
 
     use ValidationInput;
 
     /**
      * @throws WismaException
+     * @throws \Throwable
      */
     public function authenticate(array $requestedData): array
     {

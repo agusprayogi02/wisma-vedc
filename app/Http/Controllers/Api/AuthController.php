@@ -8,7 +8,7 @@ use App\Http\Requests\Auth\AuthenticateRequest;
 use App\Http\Resources\Auth\AuthResource;
 use App\Http\Response;
 use App\Models\User;
-use App\Services\Auth\AuthService;
+use App\Repositories\Auth\AuthRepository;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -27,12 +27,13 @@ class AuthController extends Controller
 
 
     /**
-     * @param AuthService $service
-     * @param Request $request
+     * @param AuthRepository $service
+     * @param AuthenticateRequest $request
      * @return Response
      * @throws WismaException
+     * @throws \Throwable
      */
-    public function authenticate(AuthService $service, AuthenticateRequest $request): Response
+    public function authenticate(AuthRepository $service, AuthenticateRequest $request): Response
     {
         $response = $service->authenticate($request->all());
 

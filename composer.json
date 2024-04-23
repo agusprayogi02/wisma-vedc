@@ -17,8 +17,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "sentry/sentry-laravel": "^4.4",
-        "spatie/laravel-json-api-paginate": "^1.14",
-        "yaza/laravel-repository-service": "^5.0"
+        "spatie/laravel-json-api-paginate": "^1.14"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

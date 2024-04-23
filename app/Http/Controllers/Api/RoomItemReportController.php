@@ -3,22 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Resources\RoomItemReport;
 use App\Http\Resources\Resources\RoomItemReport\RoomItemReportCollection as RoomItemReportRoomItemReportCollection;
-use Illuminate\Http\Request;
-use App\Repositories\RoomItemReport\RoomItemReportRepository;
 use App\Http\Resources\RoomItemReport\RoomItemReportCollection;
-use App\Models\Room;
-use App\Models\RoomItem;
+use App\Repositories\RoomItemReport\RoomItemReportRepository;
 
 class RoomItemReportController extends Controller
 {
-    private RoomItemReportRepository $roomItemReportRepository;
+    private RoomItemReportRepository $repo;
     protected array $responseMessages;
 
-    public function __construct(RoomItemReportRepository $roomItemReportRepository)
+    public function __construct(RoomItemReportRepository $repo)
     {
-        $this->roomItemReportRepository = $roomItemReportRepository;
+        $this->repo = $repo;
         $this->responseMessages = [
             "index" => "Load room item report successfully",
             "totalRusak" => "Total rusak",
@@ -29,7 +25,7 @@ class RoomItemReportController extends Controller
 
     public function index()
     {
-        $roomItemReports = $this->roomItemReportRepository->all();
+        $roomItemReports = $this->repo->all();
         return $this->response(
             new RoomItemReportCollection($roomItemReports),
             $this->getResponseMessage(__FUNCTION__)
@@ -38,7 +34,7 @@ class RoomItemReportController extends Controller
 
     public function totalRusak()
     {
-        $total = $this->roomItemReportRepository->getTotalRusak();
+        $total = $this->repo->getTotalRusak();
         return $this->response(
             ["total" => $total],
             $this->getResponseMessage(__FUNCTION__)
@@ -47,7 +43,7 @@ class RoomItemReportController extends Controller
 
     public function totalHilang()
     {
-        $total = $this->roomItemReportRepository->getTotalHilang();
+        $total = $this->repo->getTotalHilang();
         return $this->response(
             ["total" => $total],
             $this->getResponseMessage(__FUNCTION__)
@@ -56,7 +52,7 @@ class RoomItemReportController extends Controller
 
     public function total()
     {
-        $total = $this->roomItemReportRepository->getTotal();
+        $total = $this->repo->getTotal();
         return $this->response(
             ["total" => $total],
             $this->getResponseMessage(__FUNCTION__)

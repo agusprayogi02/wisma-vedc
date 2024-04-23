@@ -2,9 +2,24 @@
 
 namespace App\Repositories\RoomUser;
 
-use LaravelEasyRepository\Repository;
+use App\Models\RoomUser;
 
-interface RoomUserRepository extends Repository{
+class RoomUserRepository
+{
+    /**
+     * @var RoomUser
+     */
+    protected RoomUser $model;
 
-    public function getRoomReportCleaner(): int;
+    public function __construct(RoomUser $model)
+    {
+        $this->model = $model;
+    }
+
+    public function getRoomReportCleaner(): int
+    {
+        return $this->model
+            ->groupBy('user_id')
+            ->sum('poin');
+    }
 }

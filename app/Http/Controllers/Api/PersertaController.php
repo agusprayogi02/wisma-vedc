@@ -19,7 +19,7 @@ class PersertaController extends Controller
     function index(ListPesertaRequest $request)
     {
         return $this->response(
-            $this->service->index($request->get('id_xkelas')),
+            $this->service->index($request->get('id_xkelas'), $request->get('search')),
             $this->getResponseMessage(__FUNCTION__)
         );
     }

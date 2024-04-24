@@ -49,5 +49,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('customer/room/{tgl}', [CustomerController::class, 'getRoomCapacity']);
     Route::put('customer/booking_room/{customerId}', [CustomerController::class, 'bookRoom']);
     Route::resource('kelas', KelasController::class)->only(['index', 'show']);
-    Route::get('peserta/{id}', [PersertaController::class, 'index']);
+    Route::get('peserta', [PersertaController::class, 'index']);
 });

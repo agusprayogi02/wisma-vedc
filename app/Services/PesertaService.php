@@ -24,7 +24,7 @@ class PesertaService
             "a.jenis_ptk AS jenis_ptk " .
             "FROM calon_peserta as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
-            "WHERE a.id_xkelas_rencana = $kelasId ";
+            "WHERE a.id_xkelas_rencana = $kelasId AND a.id_xkelas = $kelasId ";
 
 
         $cmdIna = "SELECT " .
@@ -45,9 +45,9 @@ class PesertaService
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
             "WHERE a.id_xkelas = $kelasId ";
         if ($search != "") {
-            $cmdCalon .= "AND a.id_xkelas = $kelasId AND a.nama LIKE '%$search%' " .
+            $cmdCalon .= "AND a.nama LIKE '%$search%' " .
                 "OR a.nik LIKE '%$search%' OR a.nip LIKE '%$search%'";
-            $cmdIna .= "AND a.id_xkelas = $kelasId AND a.nama LIKE '%$search%' " .
+            $cmdIna .= "AND a.nama LIKE '%$search%' " .
                 "OR a.nik LIKE '%$search%' OR a.nip LIKE '%$search%'";
         }
 

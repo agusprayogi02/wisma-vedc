@@ -23,7 +23,7 @@ class ListPesertaRequest extends FormRequest
     {
         return [
             'id_xkelas' => 'required|integer',
-            'search' => 'nullable',
+            'search' => 'nullable|string',
         ];
     }
 

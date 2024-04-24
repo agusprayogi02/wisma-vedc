@@ -58,7 +58,7 @@ class KelasController extends Controller
     {
         $kelas = $this->service->show($id);
         throw_if(empty($kelas), new WismaException(message: "Kelas tidak ditemukan"));
-        $peserta = $this->pesertaService->index($id, null);
+        $peserta = $this->pesertaService->index($id, '');
         $data = $kelas[0];
         $data->peserta = $peserta;
         return $this->response(

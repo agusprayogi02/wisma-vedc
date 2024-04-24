@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class PesertaService
 {
-    public function index(string $kelasId, string|null $search): array
+    public function index(string $kelasId, string $search): array
     {
         $cmdCalon = "SELECT " .
             "a.id_xcalonpeserta AS id_xcalonpeserta, " .
@@ -24,8 +24,8 @@ class PesertaService
             "a.jenis_ptk AS jenis_ptk " .
             "FROM calon_peserta as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
-            "WHERE a.id_xkelas_rencana = $kelasId AND a.id_xkelas = $kelasId AND a.nama LIKE '%$search%' " .
-            "OR a.nik LIKE '%$search%' OR a.nip LIKE '%$search%'";
+            "WHERE a.id_xkelas_rencana = $kelasId ";
+
 
         $cmdIna = "SELECT " .
             "a.id_xcalonpeserta AS id_xcalonpeserta, " .
@@ -43,8 +43,13 @@ class PesertaService
             "a.jenis_ptk AS jenis_ptk " .
             "FROM peserta_ina as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
-            "WHERE a.id_xkelas = " . $kelasId . " AND a.nama LIKE '%$search%' " .
-            "OR a.nik LIKE '%$search%' OR a.nip LIKE '%$search%'";
+            "WHERE a.id_xkelas = $kelasId ";
+        if ($search != "") {
+            $cmdCalon .= "AND a.id_xkelas = $kelasId AND a.nama LIKE '%$search%' " .
+                "OR a.nik LIKE '%$search%' OR a.nip LIKE '%$search%'";
+            $cmdIna .= "AND a.id_xkelas = $kelasId AND a.nama LIKE '%$search%' " .
+                "OR a.nik LIKE '%$search%' OR a.nip LIKE '%$search%'";
+        }
 
         $arr = DB::connection('second_db')->select($cmdIna);
         foreach ($arr as $data) {

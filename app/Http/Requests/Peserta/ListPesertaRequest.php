@@ -37,8 +37,10 @@ class ListPesertaRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id_xkelas.required' => 'ID Kelas tidak boleh kosong',
             'id_xkelas.integer' => 'ID Kelas harus berupa angka',
+            'search.string' => 'Pencarian harus berupa teks',
+            'limit.integer' => 'Batasan data harus berupa angka',
+            'page.integer' => 'Halaman harus berupa angka',
         ];
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\WismaException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Kelas\PaginateKelasRequest;
+use App\Http\Resources\Kelas\KelasResource;
 use App\Services\KelasService;
+use App\Services\PesertaService;
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
@@ -12,13 +15,14 @@ class KelasController extends Controller
 
     protected array $responseMessages;
 
-    public function __construct(private readonly KelasService $service)
+    public function __construct(private readonly KelasService $service, private readonly PesertaService $pesertaService)
     {
         $this->responseMessages = [
             "index" => "Data kelas berhasil diambil",
             "show" => "Detail kelas berhasil diambil"
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -48,11 +52,17 @@ class KelasController extends Controller
 
     /**
      * Display the specified resource.
+     * @throws \Throwable
      */
     public function show(string $id)
     {
+        $kelas = $this->service->show($id);
+        throw_if(empty($kelas), new WismaException(message: "Kelas tidak ditemukan"));
+        $peserta = $this->pesertaService->show($id);
+        $data = $kelas[0];
+        $data->peserta = $peserta;
         return $this->response(
-            $this->service->show($id),
+            new KelasResource($data),
             $this->getResponseMessage(__FUNCTION__)
         );
     }

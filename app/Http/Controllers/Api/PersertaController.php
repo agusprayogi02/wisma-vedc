@@ -20,7 +20,7 @@ class PersertaController extends Controller
     {
         $search = $request->get('search', '');
         return $this->response(
-            $this->service->index($request->get('id_xkelas'), $search),
+            $this->service->index($request),
             $this->getResponseMessage(__FUNCTION__)
         );
     }

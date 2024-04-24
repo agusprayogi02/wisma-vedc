@@ -22,8 +22,10 @@ class ListPesertaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_xkelas' => 'required|integer',
+            'id_xkelas' => 'nullable|integer',
             'search' => 'nullable|string',
+            'limit' => 'nullable|integer',
+            'page' => 'nullable|integer',
         ];
     }
 

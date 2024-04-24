@@ -36,8 +36,7 @@ class PesertaService
             "FROM calon_peserta as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
             "LEFT JOIN xkelas_detail c ON a.id_xkelas = c.id_xkelas " .
-            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas " .
-            "WHERE ";
+            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas ";
 
         $cmdIna = "SELECT " .
             "a.id_xcalonpeserta AS id_xcalonpeserta, " .
@@ -60,22 +59,26 @@ class PesertaService
             "FROM peserta_ina as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
             "LEFT JOIN xkelas_detail c ON c.id_xkelas = a.id_xkelas " .
-            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas " .
-            "WHERE ";
+            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas ";
 
         $cmdCountCalon = "SELECT COUNT(*) as total " .
             "FROM calon_peserta as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
             "LEFT JOIN xkelas_detail c ON a.id_xkelas = c.id_xkelas " .
-            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas " .
-            "WHERE ";
+            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas ";
+
         $cmdCountIna = "SELECT COUNT(*) as total " .
             "FROM peserta_ina as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .
             "LEFT JOIN xkelas_detail c ON c.id_xkelas = a.id_xkelas " .
-            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas " .
-            "WHERE ";
+            "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas ";
 
+        if ($kelasId != "" || $search != "") {
+            $cmdCalon .= "WHERE ";
+            $cmdIna .= "WHERE ";
+            $cmdCountIna .= "WHERE ";
+            $cmdCountCalon .= "WHERE ";
+        }
         if ($kelasId != "") {
             $calon = " a.id_xkelas_rencana = $kelasId AND a.id_xkelas = $kelasId ";
             $ina = " a.id_xkelas = $kelasId ";
@@ -90,7 +93,6 @@ class PesertaService
                 $cmdIna .= "AND";
                 $cmdCountIna .= "AND";
                 $cmdCountCalon .= "AND";
-
             }
             $calon = " (a.nama LIKE '%$search%' " .
                 "OR a.nik LIKE '%$search%' OR a.nip LIKE '%$search%')";

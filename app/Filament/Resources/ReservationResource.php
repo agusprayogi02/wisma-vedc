@@ -61,7 +61,7 @@ class ReservationResource extends Resource
                 DatePicker::make('date_ci')->native(false)->required()->displayFormat('d/m/Y')
                     ->label('Tanggal Masuk')->closeOnDateSelection()->reactive()->afterStateUpdated(function ($state, Set $set) {
                         $set('date_co', null);
-                    })->minDate(Carbon::now()),
+                    }),
                 DatePicker::make('date_co')->label('Tanggal Keluar')->closeOnDateSelection()
                     ->displayFormat('d/m/Y')
                     ->disabled(function (callable $get) {

@@ -14,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
@@ -121,7 +122,9 @@ class CustomersRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\Action::make('ruangan')->form($forms)
-                    ->color(Color::Green)->icon('heroicon-o-map-pin'),
+                    ->color(Color::Green)->icon('heroicon-o-map-pin')->infolist(count($forms) <= 0 ? [
+                        TextEntry::make('info')->label("Pilih wisma untuk menambahkan data ruangan customer"),
+                    ] : null),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

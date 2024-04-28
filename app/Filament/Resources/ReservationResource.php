@@ -75,6 +75,8 @@ class ReservationResource extends Resource
                         }
                     })->native(false)->reactive()->required(),
                 Textarea::make('note')->nullable()->label('Catatan'),
+                Select::make('boardingHouses')->relationship('boardingHouses', 'name', fn($query) => $query->where('type', 'internal'))
+                    ->multiple()->label('Asrama')->required()->preload()->searchable(),
             ]);
     }
 

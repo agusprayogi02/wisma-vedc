@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ReservationResource\RelationManagers;
 use App\Forms\Components\CheckboxList;
 use App\Models\BoardingHouse;
 use App\Models\Customer;
+use App\Models\Reservation;
 use App\Models\Room;
 use Closure;
 use Filament\Forms;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -82,11 +84,12 @@ class CustomersRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        $items = BoardingHouse::all();
-        $forms = [];
         $rest = $this->ownerRecord->toArray();
+        $BHouseIds = Reservation::find($rest['id'])->boardingHouses->pluck('id')->toArray();
+        $items = BoardingHouse::where('type', 'internal')->whereIn('id', $BHouseIds)->get();
+        $forms = [];
         foreach ($items as $item) {
-            if (count($item->rooms) > 0 && $item->type != 'external') {
+            if (count($item->rooms) > 0) {
                 $forms[] = Forms\Components\Section::make($item->name)
                     ->schema(static::sectionRoom($item, $rest));
             }
@@ -117,7 +120,8 @@ class CustomersRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('ruangan')->form($forms),
+                Tables\Actions\Action::make('ruangan')->form($forms)
+                    ->color(Color::Green)->icon('heroicon-o-map-pin'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\ConstantEnum;
 use App\Filament\Resources\BoardingHouseResource\Pages;
-use App\Filament\Resources\BoardingHouseResource\RelationManagers;
+use App\Filament\Resources\BoardingHouseResource\RelationManagers\RoomsRelationManager;
 use App\Models\BoardingHouse;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -72,7 +72,7 @@ class BoardingHouseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RoomsRelationManager::class,
         ];
     }
 

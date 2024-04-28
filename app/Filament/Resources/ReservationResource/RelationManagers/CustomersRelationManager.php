@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\ReservationResource\RelationManagers;
 
+use App\Forms\Components\CheckboxList;
+use App\Models\BoardingHouse;
 use App\Models\Customer;
 use App\Models\Room;
 use Closure;
@@ -15,6 +17,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\DB;
 
 class CustomersRelationManager extends RelationManager
 {
@@ -37,7 +40,7 @@ class CustomersRelationManager extends RelationManager
                                 ['reservation_id', '=', $get('reservation_id')],
                                 ['room_id', '=', $value],
                             ])->count();
-                            if ($cust > $room->roomType->capacity) {
+                            if ($cust >= $room->roomType->capacity) {
                                 $fail('Kamar ini sudah penuh!');
                             }
                         }
@@ -79,6 +82,16 @@ class CustomersRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $items = BoardingHouse::all();
+        $forms = [];
+        $rest = $this->ownerRecord->toArray();
+        foreach ($items as $item) {
+            if (count($item->rooms) > 0 && $item->type != 'external') {
+                $forms[] = Forms\Components\Section::make($item->name)
+                    ->schema(static::sectionRoom($item, $rest));
+            }
+        }
+
         return $table
             ->recordTitleAttribute('name')
             ->columns([
@@ -104,6 +117,7 @@ class CustomersRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('ruangan')->form($forms),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -113,4 +127,59 @@ class CustomersRelationManager extends RelationManager
                 ]),
             ]);
     }
+
+    public static function sectionRoom(BoardingHouse $model, ?array $rest): ?array
+    {
+        $q = $model->rooms->load('roomType');
+        $roomIds = $q->pluck('id')->toArray();
+        $dataRooms = Room::select([
+            'rooms.id as room_id',
+            DB::raw('COUNT(customers.room_id) AS qty'),
+            'room_types.capacity AS rm_qty',
+            DB::raw('CASE
+                        WHEN COUNT(customers.room_id) >= room_types.capacity THEN "Penuh"
+                        WHEN COUNT(customers.room_id) < room_types.capacity AND COUNT(customers.room_id) > 0 THEN CONCAT("Tersisa ", (room_types.capacity - COUNT(customers.room_id)))
+                        ELSE "Kosong"
+                    END AS status')
+        ])
+            ->join('room_types', 'room_types.id', '=', 'rooms.room_type_id')
+            ->leftJoin('customers', 'rooms.id', '=', 'customers.room_id')
+            ->join('reservations', 'reservations.id', '=', 'customers.reservation_id')
+            ->whereIn('rooms.id', $roomIds)
+            ->where(function ($query) use ($rest) {
+                $query->whereBetween('reservations.date_ci', [$rest["date_ci"], $rest["date_co"]])
+                    ->orWhereBetween('reservations.date_co', [$rest["date_ci"], $rest["date_co"]])
+                    ->orWhere(function ($query) use ($rest) {
+                        $query->where('reservations.date_ci', '<', $rest["date_ci"])
+                            ->where('reservations.date_co', '>', $rest["date_co"]);
+                    });
+            })
+            ->groupBy('rooms.id', 'room_types.capacity')
+            ->get();
+
+        $statuses = $dataRooms->mapWithKeys(fn($rm) => [$rm->room_id => $rm->status])->toArray();
+        $options = $q->mapWithKeys(fn(Room $room) => [$room->id => explode('-', $room->code)[1]])->toArray();
+        $data = [];
+        $desc = [];
+        foreach ($options as $key => $value) {
+            $fDigit = intval(substr((string)$value, 0, 1));
+            if ($fDigit > 0) {
+                $data[$fDigit - 1][$key] = $value;
+                if (isset($statuses[$key])) {
+                    $desc[$fDigit - 1][$key] = $statuses[$key];
+                } else {
+                    $desc[$fDigit - 1][$key] = "Kosong";
+                }
+            }
+        }
+
+
+        return
+            collect($data)->map(fn($item, $key) => CheckboxList::make($key)
+                ->label('Lantai ' . ($key + 1))
+                ->options($item)->descriptions($desc[$key])->columns(5)
+                ->bulkToggleable()
+            )->toArray();
+    }
 }
+

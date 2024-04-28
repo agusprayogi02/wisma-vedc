@@ -74,7 +74,7 @@ class ReservationResource extends Resource
                             return Carbon::parse($min);
                         }
                     })->native(false)->reactive()->required(),
-                TextInput::make('note')->nullable()->label('Catatan'),
+                Textarea::make('note')->nullable()->label('Catatan'),
             ]);
     }
 

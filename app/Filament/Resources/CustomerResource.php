@@ -47,7 +47,7 @@ class CustomerResource extends Resource
                                 ['reservation_id', '=', $get('reservation_id')],
                                 ['room_id', '=', $value],
                             ])->count();
-                            if ($cust > $room->roomType->capacity) {
+                            if ($cust >= $room->roomType->capacity) {
                                 $fail('Kamar ini sudah penuh!');
                             }
                         }

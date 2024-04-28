@@ -30,19 +30,19 @@ class RoomResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(10),
-                Forms\Components\BelongsToSelect::make('boarding_house_id')
+                Forms\Components\Select::make('boarding_house_id')
                     ->label("Nama Asrama")
                     ->relationship('boardingHouse', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
-                Forms\Components\BelongsToSelect::make('room_status_id')
+                Forms\Components\Select::make('room_status_id')
                     ->relationship('roomStatus', 'name')
                     ->label("Status Ruangan")
                     ->searchable()
                     ->preload()
                     ->required(),
-                Forms\Components\BelongsToSelect::make('room_type_id')
+                Forms\Components\Select::make('room_type_id')
                     ->relationship('roomType', 'name')
                     ->label("Tipe Ruangan")
                     ->searchable()

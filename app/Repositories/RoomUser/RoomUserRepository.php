@@ -17,11 +17,12 @@ class RoomUserRepository
         $this->model = $model;
     }
 
-    public function getRoomReportCleaner(): int
+    public function getRoomReportCleaner(): array
     {
         return $this->model
-            ->groupBy('user_id')
-            ->sum('poin');
+            ->select(["users.name", \DB::raw('count(*) as total')])
+            ->join('users', 'users.id', '=', 'user_id')
+            ->groupBy('user_id')->get()->toArray();
     }
 
     /**

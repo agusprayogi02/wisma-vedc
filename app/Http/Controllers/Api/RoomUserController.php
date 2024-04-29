@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\RoomUser\RoomUserRepository;
-use Illuminate\Http\Request;
 use App\Http\Resources\RoomUser\RoomUserResourceCollection;
+use App\Repositories\RoomUser\RoomUserRepository;
 
 
 class RoomUserController extends Controller
 {
     private RoomUserRepository $roomUserRepository;
     protected array $responseMessages;
-    
+
     public function __construct(RoomUserRepository $roomUserRepository)
     {
         $this->roomUserRepository = $roomUserRepository;
@@ -36,7 +35,7 @@ class RoomUserController extends Controller
     {
         $total = $this->roomUserRepository->getRoomReportCleaner();
         return $this->response(
-            ["total" => $total],
+            $total,
             $this->getResponseMessage(__FUNCTION__)
         );
     }

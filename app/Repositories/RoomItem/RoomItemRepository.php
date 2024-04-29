@@ -3,7 +3,6 @@
 namespace App\Repositories\RoomItem;
 
 use App\Models\RoomItem;
-use Illuminate\Database\Eloquent\Collection;
 
 class RoomItemRepository
 {
@@ -17,10 +16,7 @@ class RoomItemRepository
         $this->model = $model;
     }
 
-    /**
-     * @return Collection|array
-     */
-    public function getRoomItems(int $perPage): \Illuminate\Database\Eloquent\Collection|array
+    public function getRoomItems(int $perPage): \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|array
     {
         return $this->model->with(['room', 'item'])->paginate($perPage);
     }

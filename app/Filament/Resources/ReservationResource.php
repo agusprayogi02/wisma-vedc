@@ -6,6 +6,7 @@ use App\Filament\Imports\ReservationImporter;
 use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\RelationManagers\CustomersRelationManager;
 use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
+use App\Filament\Resources\ReservationResource\RelationManagers\PaymentsRelationManager;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
@@ -120,6 +121,7 @@ class ReservationResource extends Resource
         return [
             CustomersRelationManager::class,
             OrdererRelationManager::class,
+            PaymentsRelationManager::class,
         ];
     }
 

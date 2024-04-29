@@ -95,9 +95,14 @@ class RoomController extends Controller
             new WismaException(ResponseCode::ERR_VALIDATION, "Room status not found")
         );
 
-        $update = $this->roomRepository->update($id, $request->all());
+        $update = $this->roomRepository->update($id, ["room_status_id" => $check_room_status->id]);
+        throw_if(
+            !$update,
+            new WismaException(ResponseCode::ERR_INVALID_OPERATION, "Failed to update room status")
+        );
+        $room = $this->roomRepository->find($id);
         return $this->response(
-            $update,
+            $room,
             $this->getResponseMessage(__FUNCTION__)
         );
     }

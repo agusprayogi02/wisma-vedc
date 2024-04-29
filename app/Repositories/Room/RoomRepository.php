@@ -20,6 +20,11 @@ class RoomRepository
         $this->model = $model;
     }
 
+    function find(int $id): array|Room|null
+    {
+        return $this->model->find($id);
+    }
+
     /**
      * @return Room[]|LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator
      */

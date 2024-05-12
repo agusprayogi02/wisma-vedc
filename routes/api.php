@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\RoomItemController;
 use App\Http\Controllers\Api\RoomItemReportController;
 use App\Http\Controllers\Api\RoomUserController;
+use App\Http\Controllers\KeeperController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,4 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('customer/booking_room/{customerId}', [CustomerController::class, 'bookRoom']);
     Route::resource('kelas', KelasController::class)->only(['index', 'show']);
     Route::get('peserta', [PersertaController::class, 'index']);
+
+    // Keeper
+    Route::get('/keeper', [KeeperController::class, 'index']);
 });

@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
@@ -122,6 +123,30 @@ class CustomersRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\Action::make('ruangan')->form($forms)
+                    ->action(function (Customer $record, array $data) {
+                        $arr = call_user_func_array('array_merge', $data);
+                        if (count($arr) == 1) {
+                            $rest = Reservation::find($record->reservation_id);
+                            $arrR = Reservation::where(function ($query) use ($rest) {
+                                $query->whereBetween('reservations.date_ci', [$rest->date_ci, $rest->date_co])
+                                    ->orWhereBetween('reservations.date_co', [$rest->date_ci, $rest->date_co])
+                                    ->orWhere(function ($query) use ($rest) {
+                                        $query->where('reservations.date_ci', '<', $rest->date_ci)
+                                            ->where('reservations.date_co', '>', $rest->date_co);
+                                    });
+                            })->pluck('id')->toArray();
+                            $customer = Customer::where('room_id', '=', $arr[0])
+                                ->whereIn('reservation_id', $arrR)->first();
+                            if ($customer->gender != $record->gender) {
+                                Notification::make()->title('Kamar ini untuk ' . ($customer->gender === "L" ? "Laki-laki" : "Perempuan"))->danger()->send();
+                                return;
+                            }
+                            $record->room_id = $arr[0];
+                            $record->save();
+                        } else {
+                            Notification::make()->title('Pilih salah satu ruangan!')->danger()->send();
+                        }
+                    })
                     ->color(Color::Green)->icon('heroicon-o-map-pin')->infolist(count($forms) <= 0 ? [
                         TextEntry::make('info')->label("Pilih wisma untuk menambahkan data ruangan customer"),
                     ] : null),
@@ -145,7 +170,7 @@ class CustomersRelationManager extends RelationManager
             'room_types.capacity AS rm_qty',
             DB::raw('CASE
                         WHEN COUNT(customers.room_id) >= room_types.capacity THEN "Penuh"
-                        WHEN COUNT(customers.room_id) < room_types.capacity AND COUNT(customers.room_id) > 0 THEN CONCAT("Tersisa ", (room_types.capacity - COUNT(customers.room_id)))
+                        WHEN COUNT(customers.room_id) < room_types.capacity AND COUNT(customers.room_id) > 0 THEN CONCAT("Tersisa ", (room_types.capacity - COUNT(customers.room_id)), " ", customers.gender)
                         ELSE "Kosong"
                     END AS status')
         ])
@@ -161,7 +186,7 @@ class CustomersRelationManager extends RelationManager
                             ->where('reservations.date_co', '>', $rest["date_co"]);
                     });
             })
-            ->groupBy('rooms.id', 'room_types.capacity')
+            ->groupBy('rooms.id', 'room_types.capacity', 'customers.gender')
             ->get();
 
         $statuses = $dataRooms->mapWithKeys(fn($rm) => [$rm->room_id => $rm->status])->toArray();
@@ -173,7 +198,13 @@ class CustomersRelationManager extends RelationManager
             if ($fDigit > 0) {
                 $data[$fDigit - 1][$key] = $value;
                 if (isset($statuses[$key])) {
-                    $desc[$fDigit - 1][$key] = $statuses[$key];
+                    $s = explode(' ', $statuses[$key]);
+                    if (count($s) === 3) {
+
+                        $desc[$fDigit - 1][$key] = $s[0] . ' ' . $s[1] . ' ' . ($s[2] === "L" ? "Laki-laki" : "Perempuan");
+                    } else {
+                        $desc[$fDigit - 1][$key] = $statuses[$key];
+                    }
                 } else {
                     $desc[$fDigit - 1][$key] = "Kosong";
                 }

@@ -61,6 +61,26 @@ class PesertaService
             "LEFT JOIN xkelas_detail c ON c.id_xkelas = a.id_xkelas " .
             "LEFT JOIN xkelas d ON d.id_xkelas = a.id_xkelas ";
 
+        return $this->resultSearch($cmdCalon, $cmdIna, $kelasId, $search, $limit, $page, true);
+    }
+
+    public function getOnlyIdAndName(?string $kelasId, ?string $search): LengthAwarePaginator
+    {
+        $cmdCalon = "SELECT " .
+            "a.id_xcalonpeserta AS id_xcalonpeserta, " .
+            "a.nama AS nama " .
+            "FROM calon_peserta as a ";
+
+        $cmdIna = "SELECT " .
+            "a.id_xcalonpeserta AS id_xcalonpeserta, " .
+            "a.nama AS nama " .
+            "FROM peserta_ina as a ";
+
+        return $this->resultSearch($cmdCalon, $cmdIna, $kelasId ?? "", $search ?? "", 20, 1, false);
+    }
+
+    protected function resultSearch(string $cmdCalon, string $cmdIna, string $kelasId, string $search, int $limit, int $page, bool $withStatus): LengthAwarePaginator
+    {
         $cmdCountCalon = "SELECT COUNT(*) as total " .
             "FROM calon_peserta as a " .
             "LEFT JOIN master.t_sekolah b ON a.npsn = b.npsn " .

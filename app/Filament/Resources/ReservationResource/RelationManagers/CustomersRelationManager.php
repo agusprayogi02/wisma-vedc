@@ -21,6 +21,7 @@ use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class CustomersRelationManager extends RelationManager
@@ -33,10 +34,14 @@ class CustomersRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)->label('Nama Lengkap'),
                 Select::make('room_id')
                     ->label('Ruang')
-                    ->relationship('room', 'code')
+                    ->relationship('room', 'code', modifyQueryUsing: function (Builder $query) {
+                        if (!empty($this->ownerRecord->boardingHouses)) {
+                            $query->whereIn('boarding_house_id', $this->ownerRecord->boardingHouses->pluck('id')->toArray());
+                        }
+                    })
                     ->rules([
                         fn(Get $get, Component $component): Closure => function (string $attr, $value, Closure $fail) use ($get, $component) {
                             $room = Room::find($value)->with('roomType')->first();
@@ -53,7 +58,6 @@ class CustomersRelationManager extends RelationManager
                     ->preload()
                     ->searchable(),
                 TextInput::make('nik')->label('NIK'),
-                TextInput::make('name')->label('Nama'),
                 TextInput::make('npsn')->label('NPSN Sekolah'),
                 TextInput::make('sekolah')->label('Nama Sekolah'),
                 Select::make('gender')->options([
@@ -137,7 +141,7 @@ class CustomersRelationManager extends RelationManager
                             })->pluck('id')->toArray();
                             $customer = Customer::where('room_id', '=', $arr[0])
                                 ->whereIn('reservation_id', $arrR)->first();
-                            if ($customer->gender != $record->gender) {
+                            if (isset($customer) && $customer->gender != $record->gender) {
                                 Notification::make()->title('Kamar ini untuk ' . ($customer->gender === "L" ? "Laki-laki" : "Perempuan"))->danger()->send();
                                 return;
                             }

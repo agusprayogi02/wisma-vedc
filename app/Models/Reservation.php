@@ -39,4 +39,9 @@ class Reservation extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+    public function rooms(): BelongsToMany
+    {
+        return $this->belongsToMany(Room::class, 'reservation_boarding_houses')->withTimestamps();
+    }
 }

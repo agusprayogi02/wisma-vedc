@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Room extends Model
@@ -12,31 +15,32 @@ class Room extends Model
 
     protected $guarded = ['id'];
 
-    public function boardingHouse()
+    public function boardingHouse(): BelongsTo
     {
         return $this->belongsTo(BoardingHouse::class);
     }
 
-    public function roomStatus()
+    public function roomStatus(): BelongsTo
     {
         return $this->belongsTo(RoomStatus::class);
     }
-    public function roomType()
+
+    public function roomType(): BelongsTo
     {
         return $this->belongsTo(RoomType::class);
     }
 
-    public function roomItems()
+    public function roomItems(): HasMany
     {
         return $this->hasMany(RoomItem::class);
     }
 
-    public function reservations()
+    public function reservations(): BelongsToMany
     {
-        return $this->hasMany(Reservation::class);
+        return $this->BelongsToMany(Reservation::class, 'reservation_boarding_houses')->withTimestamps();
     }
 
-    public function roomUsers()
+    public function roomUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'room_user')->withPivot('poin');
     }

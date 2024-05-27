@@ -204,7 +204,6 @@ class CustomersRelationManager extends RelationManager
                 if (isset($statuses[$key])) {
                     $s = explode(' ', $statuses[$key]);
                     if (count($s) === 3) {
-
                         $desc[$fDigit - 1][$key] = $s[0] . ' ' . $s[1] . ' ' . ($s[2] === "L" ? "Laki-laki" : "Perempuan");
                     } else {
                         $desc[$fDigit - 1][$key] = $statuses[$key];

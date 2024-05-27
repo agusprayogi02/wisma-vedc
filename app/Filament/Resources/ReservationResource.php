@@ -7,14 +7,17 @@ use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\RelationManagers\CustomersRelationManager;
 use App\Filament\Resources\ReservationResource\RelationManagers\OrdererRelationManager;
 use App\Filament\Resources\ReservationResource\RelationManagers\PaymentsRelationManager;
+use App\Forms\Components\CheckboxList;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -78,6 +81,32 @@ class ReservationResource extends Resource
                 Textarea::make('note')->nullable()->label('Catatan'),
                 Select::make('boardingHouses')->relationship('boardingHouses', 'name', fn($query) => $query->where('type', 'internal'))
                     ->multiple()->label('Asrama')->required()->preload()->searchable(),
+                Section::make('Ruangan')->schema([
+//                    Select::make("rooms")->relationship('rooms', 'code')->multiple()->hiddenLabel(),
+//                    TagList::make('room_codes')->hiddenLabel()->required()->disabled()->hidden(fn(Get $get) => $get('room_codes') == null),
+//                    Actions::make([
+//                        Action::make('rooms')->label('Pilih Ruangan')->button()->form(function (Get $get) {
+//                            $rest = [
+//                                "date_ci" => $get('date_ci'),
+//                                "date_co" => $get('date_co'),
+//                            ];
+//                            $houses = BoardingHouse::find($get('boardingHouses'));
+//                            $components = [];
+//                            foreach ($houses as $house) {
+//                                $components[] = Section::make($house->name)
+//                                    ->schema(CustomersRelationManager::sectionRoom($house, $rest));
+//                            }
+//                            return $components;
+//                        })->action(function (Set $set, array $data) {
+//                            $arr = call_user_func_array('array_merge', $data);
+//                            $set('room_codes', Room::whereIn('id', $arr)->pluck('code')->toArray());
+//                            $set("rooms", $arr);
+//                        }),
+//                    ]),
+                    CheckboxList::make("rooms")->relationship('rooms', 'code',
+                        modifyQueryUsing: fn(Builder $query, Get $get) => $query->whereIn('boarding_house_id', $get('boardingHouses')))
+                        ->hiddenLabel()->required()->hidden(fn(Get $get) => $get('boardingHouses') == null)->columns(5),
+                ])->hidden(fn($get) => $get('boardingHouses') == null || $get('date_ci') == null || $get('date_co') == null),
             ]);
     }
 

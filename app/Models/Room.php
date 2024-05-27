@@ -37,7 +37,7 @@ class Room extends Model
 
     public function reservations(): BelongsToMany
     {
-        return $this->BelongsToMany(Reservation::class, 'reservation_boarding_houses')->withTimestamps();
+        return $this->BelongsToMany(Reservation::class, 'reservation_room')->withTimestamps();
     }
 
     public function roomUsers(): BelongsToMany

@@ -2,34 +2,25 @@
 
 namespace App\Repositories\Keeper;
 
-use App\Models\Room;
+use App\Models\RoomStatus;
 
 class KeeperRepository
 {
-    protected Room $room;
+    protected RoomStatus $roomStatus;
 
-    public function __construct(Room $room)
+    public function __construct(RoomStatus $roomStatus)
     {
-        $this->room = $room;
+        $this->roomStatus = $roomStatus;
     }
 
     public function getSummaryRoom(): array
     {
-//        $usedRoom = $this->room->select(["rooms.id"])->leftJoin("customers", "rooms.id", "=", "customers.room_id")
-//            ->leftJoin("reservations", "customers.reservation_id", "=", "reservations.id")
-//            ->where(function ($query) {
-//                $query->whereBetween('reservations.date_ci', [now(), now()])
-//                    ->orWhereBetween('reservations.date_co', [now(), now()])
-//                    ->orWhere(function ($query) {
-//                        $query->where('reservations.date_ci', '<', now())
-//                            ->where('reservations.date_co', '>', now());
-//                    });
-//            })
-//            ->groupBy('rooms.id');
+        $sumByStatus = $this->roomStatus
+            ->selectRaw('room_statuses.id AS status_id, room_statuses.name AS status_name, COUNT(a.id) AS jumlah')
+            ->leftJoin('rooms as a', 'a.room_status_id', '=', 'room_statuses.id')
+            ->groupBy('room_statuses.id', 'room_statuses.name')
+            ->orderBy('room_statuses.id', 'ASC');
 
-        
-        return [
-            'used' => $usedRoom->count(),
-        ];
+        return $sumByStatus->get()->toArray();
     }
 }

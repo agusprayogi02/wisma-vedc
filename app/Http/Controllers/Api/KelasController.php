@@ -61,6 +61,7 @@ class KelasController extends Controller
         $peserta = $this->pesertaService->getByKelas($id);
         $data = $kelas[0];
         $data->peserta = $peserta;
+        $data->jumlah = count($peserta);
         return $this->response(
             new KelasResource($data),
             $this->getResponseMessage(__FUNCTION__)

@@ -19,6 +19,7 @@ class RoomResource extends JsonResource
             'boarding_house' => $this->whenLoaded('boardingHouse')->name,
             'room_type' => $this->whenLoaded('roomType')->name,
             'code' => $this->code,
+            'qr_code' => encrypt($this->code),
             'note' => $this->note,
         ];
     }

@@ -32,6 +32,7 @@ Route::get('permissions', [AuthController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('rooms', [RoomController::class, 'index']);
+    Route::put('rooms/{id}', [RoomController::class, 'updateRoomStatus']);
     Route::get('rooms/total_used', [RoomController::class, 'totalRoomUsedToday']);
     Route::get('rooms/total_ready', [RoomController::class, 'totalRoomReadyToday']);
     Route::get('rooms/total_kotor', [RoomController::class, 'totalRoomKotorToday']);
@@ -45,13 +46,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('room_user_reports', [RoomUserController::class, 'RoomUser']);
     Route::get('room_items', [RoomItemController::class, 'RoomItem']);
 
-    Route::put('rooms/{id}', [RoomController::class, 'updateRoomStatus']);
 
     Route::get('customer/room/{tgl}', [CustomerController::class, 'getRoomCapacity']);
     Route::put('customer/booking_room/{customerId}', [CustomerController::class, 'bookRoom']);
     Route::resource('kelas', KelasController::class)->only(['index', 'show']);
     Route::get('peserta', [PersertaController::class, 'index']);
+    Route::get('peserta/search', [PersertaController::class, 'search']);
 
     // Keeper
     Route::get('/keeper', [KeeperController::class, 'index']);
+    Route::put('/keeper/scan', [KeeperController::class, 'scanCode']);
 });

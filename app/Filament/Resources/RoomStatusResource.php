@@ -12,7 +12,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -37,14 +36,18 @@ class RoomStatusResource extends Resource
             ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('id')->sortable(),
                 ColorColumn::make('color')->label('Warna'),
                 TextColumn::make('name')->searchable()->sortable()->label('Nama'),
                 TextColumn::make('description')->searchable()->sortable()->label('Deskripsi')->wrap(),
-                BooleanColumn::make('is_active')->label('Status Aktif'),
+                Tables\Columns\IconColumn::make('is_active')->label('Status Aktif')->boolean(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

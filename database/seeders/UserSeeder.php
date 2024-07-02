@@ -48,12 +48,12 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $head->assignRole('head');
-        $geust = User::create([
+        $guest = User::create([
             'name' => 'Guest',
             'email' => 'guest@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
         ]);
-        $geust->assignRole('guest');
+        $guest->assignRole('guest');
     }
 }

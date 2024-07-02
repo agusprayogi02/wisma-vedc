@@ -5,7 +5,7 @@ namespace App\Repositories\Room;
 use App\Models\Room;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class RoomRepository
+class   RoomRepository
 {
 
     /**
@@ -79,6 +79,12 @@ class RoomRepository
             ->where('boarding_house_id', $boarding_house_id) // Menambahkan kriteria pencarian berdasarkan ID asrama
             ->whereIn('room_status_id', [1, 3, 4])
             ->count();
+    }
+
+    public function scan(string $c): ?Room
+    {
+        $code = decrypt($c);
+        return $this->model->where('code', $code)->first();
     }
 
     public function update($id, array $data): bool

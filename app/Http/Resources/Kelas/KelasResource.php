@@ -33,6 +33,7 @@ class KelasResource extends JsonResource
             'jd_nama' => $this->jd_nama,
             'ev_nama' => $this->ev_nama,
             'jml_jam' => $this->jml_jam,
+            'jumlah' => $this->jumlah,
             'peserta' => $this->peserta,
         ];
     }
